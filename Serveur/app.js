@@ -20,10 +20,10 @@ app.use('/api',api);
 
 
 //On indique ou se trouvent les fichiers
-app.use(express.static(path.join(__dirname,'../e-Paris/dist')));
+app.use(express.static(path.join(__dirname,'../dist')));
 //Requete de base qui envoi vers index.html
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname,'../e-Paris/dist/index.html'));
+    res.sendFile(path.join(__dirname,'../dist/index.html'));
 });
 
 
