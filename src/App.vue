@@ -6,10 +6,10 @@
 </template>
 
 <script>
-  import AppNav from './components/AppNav';
+import AppNav from './components/AppNav';
 
-  export default {
-    name: 'App',
-    components: { AppNav },
-  };
+export default {
+  name: 'App',
+  components: { AppNav },
+};
 </script>

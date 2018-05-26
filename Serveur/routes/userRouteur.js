@@ -2,7 +2,6 @@ const express = require('express');
 const router = express();
 const db = require('../db/dbConnection');
 const utils = require('../auth/auth');
-var Cookies = require( "cookies" );
 
 
 console.log("Routeur User");
@@ -37,6 +36,8 @@ router.post('/login', function (req, res) {
     });
 });
 
+router.get('/get')
+
 //add user
 router.post('/add', function (req, res) {
     res.writeHead(200, {"Content-Type": "application/json"});
@@ -47,6 +48,11 @@ router.post('/add', function (req, res) {
     let date = req.body.date;
     let mail = req.body.mail;
     let passwordCrypt = utils().cryptPassword(password);
+    if (userExist(pseudo).rows[0] !=== undefined){
+      res.status(409).json({
+        message: 'Ce login est déjà utilisé !',
+      });
+    }
     let query = 'INSERT INTO public.user ("loginUser", "nomUser", "prenomUser", "mailUser", "dateNaissance", "password", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
     console.log(query);
     db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
@@ -54,5 +60,14 @@ router.post('/add', function (req, res) {
         res.end("Utilisateur créé");
     });
 });
+
+function userExist(loginUser) {
+  let query = 'select * from public.user where "loginUser" = $1';
+  console.log(query);
+  db.query(query, [loginUser], function (err, result) {
+    if (err) throw err;
+    return result;
+  });
+}
 
 module.exports = router;

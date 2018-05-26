@@ -17,37 +17,37 @@
 </template>
 
 <script>
-  import { getUser } from '../../api/request-api';
+import { getUser } from '../../api/request-api';
 
-  export default {
-    name: 'LogIn',
-    data() {
-      return {
-        login: '',
-        password: '',
-        user: '',
-        message: '',
-        success: '',
-      }
+export default {
+  name: 'LogIn',
+  data() {
+    return {
+      login: '',
+      password: '',
+      user: '',
+      message: '',
+      success: '',
+    };
+  },
+  methods: {
+    connectUser() {
+      getUser(this.login, this.password).then((user) => {
+        console.log(typeof (user.success));
+        if (user.success) {
+          this.success = true;
+          this.message = 'Connecté !';
+          this.$store.dispatch('login', user.token).then(() => {
+            this.$router.push('/');
+          });
+        } else {
+          this.message = 'UTILISATEUR INCONNU';
+          this.success = false;
+        }
+      });
     },
-    methods: {
-      connectUser() {
-        getUser(this.login, this.password).then((user) => {
-          console.log(typeof (user.success));
-          if(user.success){
-            this.success = true;
-            this.message = 'Connecté !';
-            this.$store.dispatch("login", user.token).then(() => {
-                this.$router.push("/")
-              });
-          }else{
-            this.message = 'UTILISATEUR INCONNU';
-            this.success = false;
-          }
-        });
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>

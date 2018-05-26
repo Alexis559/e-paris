@@ -11,7 +11,7 @@ function getPublicMatches() {
 }
 
 function getGames() {
-  console.log(localStorage.getItem("access_token"));
+  console.log(localStorage.getItem('access_token'));
   const url = `${BASE_URL}/api/game/get`;
   return axios.get(url).then(response => response.data);
 }
@@ -19,10 +19,10 @@ function getGames() {
 function getUser(login, password) {
   const url = `${BASE_URL}/api/user/login`;
   return axios.post(url, {
-      login: login,
-      password: password,
-    })
-    .then(response => response.data);
+    login: login,
+    password: password,
+  })
+  .then(response => response.data);
 }
 
 function addUser(nom, prenom, pseudo, mail, password, date) {

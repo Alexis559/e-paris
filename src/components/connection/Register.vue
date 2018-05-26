@@ -20,35 +20,41 @@
       <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
       <label for="inputPassword" class="sr-only">Password (confirm)</label>
       <input v-model="passwordConfirm" type="password" id="inputPasswordSecond" class="form-control" placeholder="Password Confirm" required>
+      <p class="badge badge-danger" v-if="this.password !== this.passwordConfirm && this.passwordConfirm !== ''">Les mots de passe ne correspondent pas !</p>
       <label for="inputDate" class="sr-only">Date de naissance</label>
       <input v-model="dateNaissance"type="date" id="inputDate" class="form-control" placeholder="" required>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="!validForm">Sign up</button>
     </form>
   </div>
 </template>
 
 <script>
-  import { addUser } from '../../api/request-api';
+import { addUser } from '../../api/request-api';
 
-  export default {
-    name: "Register",
-    data(){
-      return {
-        nomUser: '',
-        prenomUser:'',
-        pseudoUser: '',
-        mailUser: '',
-        password: '',
-        passwordConfirm: '',
-        dateNaissance: '',
-      }
+export default {
+  name: 'Register',
+  data(){
+    return {
+      nomUser: '',
+      prenomUser: '',
+      pseudoUser: '',
+      mailUser: '',
+      password: '',
+      passwordConfirm: '',
+      dateNaissance: '',
+    };
+  },
+  computed: {
+    validForm() {
+      return this.password === this.passwordConfirm && this.password !== '';
     },
-      methods: {
-        addUser() {
-          addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance);
-        }
-      }
-  };
+  },
+  methods: {
+    addUser() {
+      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -92,4 +98,5 @@
     border-bottom-left-radius: 0;
     margin-bottom: -1px;
   }
+
 </style>

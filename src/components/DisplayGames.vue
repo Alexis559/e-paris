@@ -18,26 +18,26 @@
 
 <script>
 
-  import { getGames } from '../api/request-api';
+import { getGames } from '../api/request-api';
 
-  export default {
-    name: 'DisplayGames',
-    data() {
-      return {
-        games: '',
-      };
+export default {
+  name: 'DisplayGames',
+  data() {
+    return {
+      games: '',
+    };
+  },
+  methods: {
+    getGames() {
+      getGames().then((games) => {
+        this.games = games;
+      });
     },
-    methods: {
-      getGames() {
-        getGames().then((games) => {
-          this.games = games;
-        });
-      },
-    },
-    mounted() {
-      this.getGames();
-    },
-  };
+  },
+  mounted() {
+    this.getGames();
+  },
+};
 </script>
 
 <style scoped>
