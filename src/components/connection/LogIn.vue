@@ -1,8 +1,8 @@
 <template>
   <div class="text-center">
     <div id="showConnection">
-      <h5 class="alert alert-danger" v-show="message === 'UTILISATEUR INCONNU'">{{ message }}</h5>
-      <h5 class="alert alert-success" v-show="user.length != 0">{{ message }}</h5>
+      <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
+      <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
     </div>
     <form @submit.prevent="connectUser" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Please Log in</h1>
@@ -13,10 +13,6 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
     </form>
     <router-link to="/register"><p>Create an account</p></router-link>
-    <p>{{ user.loginUser }} </p>
-    <p> {{ user.prenomUser }}
-      {{ user.nomUser }}</p>
-    <p>{{ user.mailUser }}</p>
   </div>
 </template>
 
@@ -31,17 +27,22 @@
         password: '',
         user: '',
         message: '',
+        success: '',
       }
     },
     methods: {
       connectUser() {
         getUser(this.login, this.password).then((user) => {
-          if(user.length == 0){
-            this.message = 'UTILISATEUR INCONNU';
-            this.user = '';
-          }else{
+          console.log(typeof (user.success));
+          if(user.success){
+            this.success = true;
             this.message = 'Connecté !';
-            this.user = user[0];
+            this.$store.dispatch("login", user.token).then(() => {
+                this.$router.push("/")
+              });
+          }else{
+            this.message = 'UTILISATEUR INCONNU';
+            this.success = false;
           }
         });
       },

@@ -3,6 +3,7 @@
     <h3 class="text-center">Schedule Matches</h3>
     <hr/>
     <div><h1 class="badge alert-info">League Of Legends</h1></div>
+    <h1 class="alert alert-danger text-center" v-if="publicMatches === ''">AUTH FAILED</h1>
     <div class="card-deck text-center">
       <div class="col-sm-3" v-for="(data, index) in publicMatches" :key='index'>
         <div class="card mb-3 box-shadow">

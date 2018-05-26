@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+if(localStorage.getItem("access_token") != null){
+  axios.defaults.headers.common['x-access-token'] = localStorage.getItem("access_token");
+}
 const BASE_URL = 'http://localhost:3000';
 
 function getPublicMatches() {
@@ -8,12 +11,13 @@ function getPublicMatches() {
 }
 
 function getGames() {
+  console.log(localStorage.getItem("access_token"));
   const url = `${BASE_URL}/api/game/get`;
   return axios.get(url).then(response => response.data);
 }
 
 function getUser(login, password) {
-  const url = `${BASE_URL}/api/user/get`;
+  const url = `${BASE_URL}/api/user/login`;
   return axios.post(url, {
       login: login,
       password: password,

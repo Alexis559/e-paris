@@ -21,8 +21,9 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <router-link to="/connection"><button class="btn btn-info log">Log in</button></router-link>
-        <router-link to="/register"><button class="btn btn-success log">Sign up</button></router-link>
+        <router-link to="/connection" v-if="!isLoggedIn"><button class="btn btn-info log">Log in</button></router-link>
+        <router-link to="/register" v-if="!isLoggedIn"><button class="btn btn-success log">Sign up</button></router-link>
+        <router-link to="/" v-if="isLoggedIn"><button @click="logout" class="btn btn-danger log">Log out</button></router-link>
       </li>
     </ul>
   </nav>
@@ -32,6 +33,16 @@
 
 export default {
   name: 'app-nav',
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    }
+  }
 };
 </script>
 

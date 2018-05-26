@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express();
 const db = require('../db/dbConnection');
+const auth = require('../auth/access');
 
 console.log("Routeur Game");
 
-router.get('/get', function (req, res) {
+router.get('/get', auth,function (req, res) {
     res.writeHead(200, {"Content-Type": "application/json"});
     res.end(JSON.stringify(
         [{
@@ -33,5 +34,7 @@ router.get('/get', function (req, res) {
             }]
     ));
 });
+
+
 
 module.exports = router;
