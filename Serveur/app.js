@@ -27,11 +27,6 @@ app.get('*', function (req, res) {
 });
 
 
-app.set( 'port', ( process.env.PORT || 5000 ));
-
-// Start node server
-const server = app.listen( app.get( 'port' ), function() {
-    console.log( 'Node server is running on port ' + app.get( 'port' ));
-});
+app.listen(port);
 
 module.exports = app;
