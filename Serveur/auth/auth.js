@@ -1,8 +1,7 @@
 module.exports = function(){
     const bcrypt = require('bcrypt-nodejs');
-    const uuidv4 = require('uuid4');
     const jwt = require('jsonwebtoken');
-    const randomSecretKey = "test";
+    const randomSecretKey = "9d5553af-a457-4a19-9c2c-09f950912397";
 
     const module = {};
 

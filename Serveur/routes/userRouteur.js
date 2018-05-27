@@ -48,14 +48,12 @@ router.post('/add', function (req, res) {
 
     let query1 = 'select count(*) from public.user where "loginUser" = $1';
     db.query(query1, [pseudo], function (err, result) {
-      console.log(result.rows[0].count);
       if(result.rows[0].count === '1'){
         res.status(409).json({
           message: 'Ce login est déjà utilisé !',
         });
       }else{
         let query = 'INSERT INTO public.user ("loginUser", "nomUser", "prenomUser", "mailUser", "dateNaissance", "password", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
-        console.log(query);
         db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
            if (err) throw err;
            res.status(201).json({
@@ -68,7 +66,6 @@ router.post('/add', function (req, res) {
 
 function userExist(loginUser) {
   let query = 'select count(*) from public.user where "loginUser" = $1';
-  console.log(query);
   db.query(query, [loginUser], function (err, result) {
     if (err) throw err;
     console.log(result);

@@ -23,7 +23,7 @@
       <input v-model="passwordConfirm" type="password" id="inputPasswordSecond" class="form-control" placeholder="Password Confirm" required>
       <p class="badge badge-danger" v-if="this.password !== this.passwordConfirm && this.passwordConfirm !== ''">Les mots de passe ne correspondent pas !</p>
       <label for="inputDate" class="sr-only">Date de naissance</label>
-      <input v-model="dateNaissance"type="date" id="inputDate" class="form-control" placeholder="" required>
+      <input v-model="dateNaissance" type="date" id="inputDate" class="form-control" placeholder="" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="!validForm">Sign up</button>
     </form>
   </div>
@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     addUser() {
-      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((user) => {
-        this.message = user.message;
+      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((rep) => {
+        this.message = rep.message;
       });
     },
   },
