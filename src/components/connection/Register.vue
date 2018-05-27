@@ -1,5 +1,6 @@
 <template>
   <div class="text-center">
+    {{ message }}
     <form @submit.prevent="addUser" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
       <div class="text-left row">
@@ -42,6 +43,7 @@ export default {
       password: '',
       passwordConfirm: '',
       dateNaissance: '',
+      message: '',
     };
   },
   computed: {
@@ -51,7 +53,9 @@ export default {
   },
   methods: {
     addUser() {
-      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance);
+      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((user) => {
+        this.message = user.message;
+      });
     },
   },
 };

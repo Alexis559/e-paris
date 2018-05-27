@@ -36,11 +36,8 @@ router.post('/login', function (req, res) {
     });
 });
 
-router.get('/get')
-
 //add user
 router.post('/add', function (req, res) {
-    res.writeHead(200, {"Content-Type": "application/json"});
     let pseudo = req.body.pseudo;
     let password = req.body.password;
     let nom = req.body.nom;
@@ -48,24 +45,33 @@ router.post('/add', function (req, res) {
     let date = req.body.date;
     let mail = req.body.mail;
     let passwordCrypt = utils().cryptPassword(password);
-    if (userExist(pseudo).rows[0] !=== undefined){
-      res.status(409).json({
-        message: 'Ce login est déjà utilisé !',
-      });
-    }
-    let query = 'INSERT INTO public.user ("loginUser", "nomUser", "prenomUser", "mailUser", "dateNaissance", "password", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
-    console.log(query);
-    db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
-        if (err) throw err;
-        res.end("Utilisateur créé");
+
+    let query1 = 'select count(*) from public.user where "loginUser" = $1';
+    db.query(query1, [pseudo], function (err, result) {
+      console.log(result.rows[0].count);
+      if(result.rows[0].count === '1'){
+        res.status(409).json({
+          message: 'Ce login est déjà utilisé !',
+        });
+      }else{
+        let query = 'INSERT INTO public.user ("loginUser", "nomUser", "prenomUser", "mailUser", "dateNaissance", "password", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
+        console.log(query);
+        db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
+           if (err) throw err;
+           res.status(201).json({
+             message: 'Utilisateur créé !',
+           });
+         });
+      }
     });
 });
 
 function userExist(loginUser) {
-  let query = 'select * from public.user where "loginUser" = $1';
+  let query = 'select count(*) from public.user where "loginUser" = $1';
   console.log(query);
   db.query(query, [loginUser], function (err, result) {
     if (err) throw err;
+    console.log(result);
     return result;
   });
 }
