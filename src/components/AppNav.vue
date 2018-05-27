@@ -21,7 +21,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <router-link to="/connection" v-if="!isLoggedIn"><button class="btn btn-info log">Log in</button></router-link>
+        <router-link to="/login" v-if="!isLoggedIn"><button class="btn btn-info log">Log in</button></router-link>
         <router-link to="/register" v-if="!isLoggedIn"><button class="btn btn-success log">Sign up</button></router-link>
         <router-link to="/profil" v-if="isLoggedIn"> <button type="button" class="btn btn-info log"><img src="../assets/icons/open-iconic-master/svg/person.svg" alt="person"/>User</button></router-link>
         <router-link to="" v-if="isLoggedIn"><button @click="logout" class="btn btn-danger log">Log out</button></router-link>

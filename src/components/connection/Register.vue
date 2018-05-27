@@ -1,5 +1,6 @@
 <template>
-  <div class="text-center">
+  <div>
+  <div v-if="!logged" class="text-center">
     {{ message }}
     <form @submit.prevent="addUser" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
@@ -27,13 +28,17 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="!validForm">Sign up</button>
     </form>
   </div>
+    <AlreadyConnect v-else></AlreadyConnect>
+  </div>
 </template>
 
 <script>
 import { addUser } from '../../api/request-api';
+import AlreadyConnect from "../errors/AlreadyConnect";
 
 export default {
   name: 'Register',
+  components: {AlreadyConnect},
   data(){
     return {
       nomUser: '',
@@ -44,6 +49,7 @@ export default {
       passwordConfirm: '',
       dateNaissance: '',
       message: '',
+      logged: '',
     };
   },
   computed: {
@@ -57,6 +63,9 @@ export default {
         this.message = rep.message;
       });
     },
+  },
+  mounted() {
+    this.logged = this.$store.getters.isLoggedIn;
   },
 };
 </script>

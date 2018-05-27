@@ -1,26 +1,31 @@
 <template>
-  <div class="text-center">
-    <div id="showConnection">
-      <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
-      <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+  <div>
+    <div v-if="!logged" class="text-center">
+      <div id="showConnection">
+        <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
+        <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+      </div>
+      <form @submit.prevent="connectUser" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Please Log in</h1>
+        <label for="inputLogin" class="sr-only">Login</label>
+        <input v-model="login" type="text" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+      </form>
+      <router-link to="/register"><p>Create an account</p></router-link>
     </div>
-    <form @submit.prevent="connectUser" class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Please Log in</h1>
-      <label for="inputLogin" class="sr-only">Login</label>
-      <input v-model="login" type="text" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-    </form>
-    <router-link to="/register"><p>Create an account</p></router-link>
+    <AlreadyConnect v-else></AlreadyConnect>
   </div>
 </template>
 
 <script>
 import { getLogin } from '../../api/request-api';
+import AlreadyConnect from "../errors/AlreadyConnect";
 
 export default {
   name: 'LogIn',
+  components: {AlreadyConnect},
   data() {
     return {
       login: '',
@@ -28,12 +33,12 @@ export default {
       user: '',
       message: '',
       success: '',
+      logged: '',
     };
   },
   methods: {
     connectUser() {
       getLogin(this.login, this.password).then((user) => {
-        console.log(typeof (user.success));
         if (user.success) {
           this.success = true;
           this.message = 'Connecté !';
@@ -46,6 +51,9 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    this.logged = this.$store.getters.isLoggedIn;
   },
 };
 </script>

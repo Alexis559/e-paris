@@ -1,7 +1,7 @@
 <template>
     <div class="text-center">
       {{ message }}
-      <form @submit.prevent="addUser" class="form-signin">
+      <form @submit.prevent="updateUser" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Modifier votre profil</h1>
         <div class="text-left row">
           <div class="col-md-6 mb-3">
@@ -24,7 +24,7 @@
 
 
 <script>
-  import { getProfilUser } from '../../api/request-api';
+  import { updateUser, getProfilUser } from '../../api/request-api';
 
   export default {
     name: 'UpdateProfil',
@@ -34,13 +34,20 @@
         prenomUser: '',
         pseudoUser: '',
         mailUser: '',
-        password: '',
-        passwordConfirm: '',
-        dateNaissance: '',
         message: '',
       };
     },
     methods: {
+      updateUser() {
+        updateUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser).then((rep) =>  {
+          if(rep.message === 'Utilisateur modifié !'){
+            this.$store.dispatch('logout');
+            this.$store.dispatch('login', rep.token).then(() => {
+              document.location.href = '/profil';
+            });
+          }
+        });
+       },
       getProfilUser() {
         getProfilUser().then((rep) => {
           this.nomUser = rep.result.rows[0].nomUser;
@@ -51,6 +58,9 @@
       },
     },
     mounted() {
+      if(!this.store.getters.isLoggedIn()){
+        router.push('/');
+      }
       this.getProfilUser();
     },
   };

@@ -7,14 +7,33 @@
         <router-link to="/profil/update">
           <button class="btn btn-primary">Modifier profil</button>
       </router-link>
-        <router-link to="/profil/update">
-          <button class="btn btn-danger log">Supprimer</button>
-        </router-link>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#userSuppr">
+          Supprimer
+        </button>
       </div>
     </div>
     <div id="infos">
       Date de création: {{ dateCreation}}
     </div>
+
+    <div class="modal fade" id="userSuppr" tabindex="-1" role="dialog" aria-labelledby="Supprimer compte" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="userSupprLabel">Supprimer compte</h5>
+          </div>
+          <div class="modal-body">
+            Etes-vous sur de vouloir supprimer votre compte ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Oui</button>
+            <button type="button" class="btn btn-primary">Non</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 

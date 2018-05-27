@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Schedule from '../components/Schedule';
 import Accueil from '../components/Accueil';
-import NotFound from '../components/Notfound';
+import NotFound from '../components/errors/Notfound';
 import Games from '../components/DisplayGames';
 import LogIn from '../components/connection/LogIn';
 import Register from '../components/connection/Register';
@@ -30,8 +30,8 @@ export default new Router({
       component: Games,
     },
     {
-      path: '/connection',
-      name: 'Connection',
+      path: '/login',
+      name: 'Login',
       component: LogIn,
     },
     {

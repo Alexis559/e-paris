@@ -13,27 +13,34 @@ router.post('/login', function (req, res) {
     let login = req.body.login;
     let password = req.body.password;
     let query = 'SELECT * from public.user where "loginUser" = $1';//we're escaping values to avoid sql injection
-    console.log(query);
     db.query(query, [login], function (err, result) {
         if (err) throw err;
-        if(utils().compareSync(password, result.rows[0].password)){
+        if(result.rows[0] !== undefined) {
+          if(utils().compareSync(password, result.rows[0].password)){
             const payload = {
-                admin: result.rows[0].admin,
-                login: result.rows[0].loginUser
+              admin: result.rows[0].admin,
+              login: result.rows[0].loginUser
             };
             var token = utils().createToken(payload);
             // return the information including token as JSON
             res.status(200).json({
-                success: true,
-                message: 'User connected!',
-                token: token
+              success: true,
+              message: 'User connected!',
+              token: token
             });
-        }else{
+          }else{
             res.status(401).json({
-                success: false,
-                message: 'user not found',
-                token: null
+              success: false,
+              message: 'user not found',
+              token: null
             });
+          }
+        }else {
+          res.status(401).json({
+            success: false,
+            message: 'user not found',
+            token: null
+          });
         }
     });
 });
@@ -82,5 +89,38 @@ router.post('/add', function (req, res) {
       }
     });
 });
+
+router.put('/update', auth, function (req, res) {
+  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  let pseudo = req.body.pseudo;
+  let nom = req.body.nom;
+  let prenom = req.body.prenom;
+  let mail = req.body.mail;
+  let query1 = 'select count(*) from public.user where "loginUser" = $1';
+  db.query(query1, [pseudo], function (err, result) {
+    //if the pseudo already exists we return an error
+    if(decoded.login !== pseudo && result.rows[0].count === '1'){
+      res.status(409).json({
+        message: 'Ce login est déjà utilisé !',
+      });
+    }else{
+      let query = 'UPDATE public.user set "loginUser" = $1, "nomUser" = $2, "prenomUser" = $3, "mailUser" = $4 where "loginUser" = $5';//we're escaping values to avoid sql injection
+      db.query(query, [pseudo, nom, prenom, mail, decoded.login], function (err, result) {
+        if (err) throw err;
+        const payload = {
+          admin: decoded.admin,
+          login: pseudo
+        };
+        var token = utils().createToken(payload);
+        // return the information including the new token as JSON
+        res.status(201).json({
+          message: 'Utilisateur modifié !',
+          token: token,
+        });
+      });
+    }
+  });
+});
+
 
 module.exports = router;
