@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getUser } from '../../api/request-api';
+import { getLogin } from '../../api/request-api';
 
 export default {
   name: 'LogIn',
@@ -32,13 +32,13 @@ export default {
   },
   methods: {
     connectUser() {
-      getUser(this.login, this.password).then((user) => {
+      getLogin(this.login, this.password).then((user) => {
         console.log(typeof (user.success));
         if (user.success) {
           this.success = true;
           this.message = 'Connecté !';
           this.$store.dispatch('login', user.token).then(() => {
-            this.$router.push('/');
+            document.location.href = '/';
           });
         } else {
           this.message = 'UTILISATEUR INCONNU';

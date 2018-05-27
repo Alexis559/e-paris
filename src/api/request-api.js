@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-if (localStorage.getItem("access_token") != null){
+// we add the token for each request if it's defined
+if( localStorage.getItem("access_token") != null){
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem("access_token");
 }
-const BASE_URL = '';
+
+// const BASE_URL = '';
+const BASE_URL = 'http://localhost:3000';
 
 function getPublicMatches() {
   const url = `${BASE_URL}/api/match/get`;
@@ -16,13 +19,20 @@ function getGames() {
   return axios.get(url).then(response => response.data);
 }
 
-function getUser(login, password) {
+function getLogin(login, password) {
   const url = `${BASE_URL}/api/user/login`;
   return axios.post(url, {
     login: login,
     password: password,
   })
   .then(response => response.data);
+}
+
+
+function getProfilUser() {
+  const url = `${BASE_URL}/api/user/profil`;
+  return axios.get(url)
+    .then(response => response.data);
 }
 
 function addUser(nom, prenom, pseudo, mail, password, date) {
@@ -38,4 +48,4 @@ function addUser(nom, prenom, pseudo, mail, password, date) {
     .then(response => response.data);
 }
 
-export { getPublicMatches, getGames, getUser, addUser };
+export { getPublicMatches, getGames, getLogin, addUser, getProfilUser };

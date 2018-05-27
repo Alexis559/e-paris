@@ -21,5 +21,15 @@ module.exports = function(){
         return jwt.sign(payload, randomSecretKey);
     };
 
+    module.getUserLogin = function(req) {
+      if(req !== undefined){
+        const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+        var userData = decoded;
+        return userData;
+      }else{
+        return 'pas de chance';
+      }
+    };
+
     return module;
 };

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express();
 const db = require('../db/dbConnection');
 const utils = require('../auth/auth');
+const auth = require('../auth/access');
+const jwt = require('jsonwebtoken');
 
 
 console.log("Routeur User");
@@ -36,6 +38,23 @@ router.post('/login', function (req, res) {
     });
 });
 
+router.get('/profil', auth, function (req, res) {
+  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  let query = 'SELECT "loginUser", "nomUser", "prenomUser", "mailUser", "dateCreation" from public.user where "loginUser" = $1';
+  db.query(query, [decoded.login], function (err, result) {
+    if (err) throw err;
+    if (result.rows[0] !== undefined) {
+      res.status(200).json({result});
+    } else {
+      res.status(401).json({
+        message: 'user not found'
+      })
+      ;
+    }
+  });
+});
+
+
 //add user
 router.post('/add', function (req, res) {
     let pseudo = req.body.pseudo;
@@ -63,14 +82,5 @@ router.post('/add', function (req, res) {
       }
     });
 });
-
-function userExist(loginUser) {
-  let query = 'select count(*) from public.user where "loginUser" = $1';
-  db.query(query, [loginUser], function (err, result) {
-    if (err) throw err;
-    console.log(result);
-    return result;
-  });
-}
 
 module.exports = router;

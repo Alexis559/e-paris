@@ -6,6 +6,8 @@ import NotFound from '../components/Notfound';
 import Games from '../components/DisplayGames';
 import LogIn from '../components/connection/LogIn';
 import Register from '../components/connection/Register';
+import UserProfil from '../components/profil/UserProfil';
+import UserProfilUpdate from '../components/profil/UpdateProfil';
 
 Vue.use(Router);
 
@@ -36,6 +38,16 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register,
+    },
+    {
+      path: '/profil/update',
+      name: 'User Profil Update',
+      component: UserProfilUpdate,
+    },
+    {
+      path: '/profil',
+      name: 'User Profil',
+      component: UserProfil,
     },
     {
       path: '*',
