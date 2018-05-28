@@ -7,7 +7,8 @@ module.exports = function (req, res, callback) {
         callback();
     }catch (error) {
         return res.status(401).json({
-            message: 'Auth failed'
+            success: false,
+            message: 'Vous devez être connecté !'
         });
     }
 };

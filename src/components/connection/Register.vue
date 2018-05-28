@@ -1,7 +1,10 @@
 <template>
   <div>
   <div v-if="!logged" class="text-center">
-    {{ message }}
+    <div id="showConnection">
+      <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
+      <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+    </div>
     <form @submit.prevent="addUser" class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
       <div class="text-left row">
@@ -22,7 +25,7 @@
       <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
       <label for="inputPassword" class="sr-only">Password (confirm)</label>
       <input v-model="passwordConfirm" type="password" id="inputPasswordSecond" class="form-control" placeholder="Password Confirm" required>
-      <p class="badge badge-danger" v-if="this.password !== this.passwordConfirm && this.passwordConfirm !== ''">Les mots de passe ne correspondent pas !</p>
+      <p class="badge badge-danger" v-if="!validForm">Les mots de passe ne correspondent pas !</p>
       <label for="inputDate" class="sr-only">Date de naissance</label>
       <input v-model="dateNaissance" type="date" id="inputDate" class="form-control" placeholder="" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="!validForm">Sign up</button>
@@ -49,6 +52,7 @@ export default {
       passwordConfirm: '',
       dateNaissance: '',
       message: '',
+      success: '',
       logged: '',
     };
   },
@@ -59,8 +63,11 @@ export default {
   },
   methods: {
     addUser() {
-      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((rep) => {
-        this.message = rep.message;
+      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then(function(response) {
+       this.message = response.message;
+      }).catch((error) => {
+        this.success = error.response.data.success;
+        this.message = error.response.data.message;
       });
     },
   },
@@ -76,7 +83,7 @@ export default {
     max-width: 500px;
     padding: 15px;
     margin: auto;
-    margin-top: 15vh;
+    margin-top: -10vh;
   }
   .form-signin {
     font-weight: 400;
@@ -110,6 +117,18 @@ export default {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     margin-bottom: -1px;
+  }
+
+  #showConnection{
+    width: 100%;
+    max-width: 330px;
+    margin: auto;
+    margin-top: 10vh;
+    height: 10vh;
+  }
+
+  #showConnection h5{
+    margin-top: 5vh;
   }
 
 </style>

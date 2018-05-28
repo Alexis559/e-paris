@@ -5,8 +5,8 @@ if( localStorage.getItem('access_token') != null){
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('access_token');
 }
 
-const BASE_URL = '';
-//const BASE_URL = 'http://localhost:3000';
+//const BASE_URL = '';
+const BASE_URL = 'http://localhost:3000';
 
 function getPublicMatches() {
   const url = `${BASE_URL}/api/match/get`;
@@ -14,7 +14,6 @@ function getPublicMatches() {
 }
 
 function getGames() {
-  console.log(localStorage.getItem('access_token'));
   const url = `${BASE_URL}/api/game/get`;
   return axios.get(url).then(response => response.data);
 }
@@ -58,4 +57,10 @@ function addUser(nom, prenom, pseudo, mail, password, date) {
     .then(response => response.data);
 }
 
-export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser };
+function deleteUser() {
+  const url = `${BASE_URL}/api/user/delete`;
+  return axios.delete(url)
+    .then(response => response.data);
+}
+
+export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser, deleteUser };

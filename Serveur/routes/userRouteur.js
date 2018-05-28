@@ -19,26 +19,27 @@ router.post('/login', function (req, res) {
           if(utils().compareSync(password, result.rows[0].password)){
             const payload = {
               admin: result.rows[0].admin,
-              login: result.rows[0].loginUser
+              login: result.rows[0].loginUser,
+              idUser: result.rows[0].idUser,
             };
             var token = utils().createToken(payload);
             // return the information including token as JSON
             res.status(200).json({
               success: true,
-              message: 'User connected!',
+              message: 'Utilisateur connecté !',
               token: token
             });
           }else{
             res.status(401).json({
               success: false,
-              message: 'user not found',
+              message: 'Utilisateur inconnu !',
               token: null
             });
           }
         }else {
           res.status(401).json({
             success: false,
-            message: 'user not found',
+            message: 'Utilisateur inconnu !',
             token: null
           });
         }
@@ -47,20 +48,20 @@ router.post('/login', function (req, res) {
 
 router.get('/profil', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
-  let query = 'SELECT "loginUser", "nomUser", "prenomUser", "mailUser", "dateCreation" from public.user where "loginUser" = $1';
-  db.query(query, [decoded.login], function (err, result) {
+  let query = 'SELECT "loginUser", "nomUser", "prenomUser", "mailUser", "dateCreation" from public.user where "loginUser" = $1 and "idUser" = $2';
+  db.query(query, [decoded.login, decoded.idUser], function (err, result) {
     if (err) throw err;
     if (result.rows[0] !== undefined) {
-      res.status(200).json({result});
+      res.status(200).json({success: false, result});
     } else {
       res.status(401).json({
-        message: 'user not found'
+        success: false,
+        message: 'Utilisateur inconnu !'
       })
       ;
     }
   });
 });
-
 
 //add user
 router.post('/add', function (req, res) {
@@ -76,6 +77,7 @@ router.post('/add', function (req, res) {
     db.query(query1, [pseudo], function (err, result) {
       if(result.rows[0].count === '1'){
         res.status(409).json({
+          success: false,
           message: 'Ce login est déjà utilisé !',
         });
       }else{
@@ -83,6 +85,7 @@ router.post('/add', function (req, res) {
         db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
            if (err) throw err;
            res.status(201).json({
+             success: true,
              message: 'Utilisateur créé !',
            });
          });
@@ -101,19 +104,22 @@ router.put('/update', auth, function (req, res) {
     //if the pseudo already exists we return an error
     if(decoded.login !== pseudo && result.rows[0].count === '1'){
       res.status(409).json({
+        succes: 'false',
         message: 'Ce login est déjà utilisé !',
       });
     }else{
-      let query = 'UPDATE public.user set "loginUser" = $1, "nomUser" = $2, "prenomUser" = $3, "mailUser" = $4 where "loginUser" = $5';//we're escaping values to avoid sql injection
-      db.query(query, [pseudo, nom, prenom, mail, decoded.login], function (err, result) {
+      let query = 'UPDATE public.user set "loginUser" = $1, "nomUser" = $2, "prenomUser" = $3, "mailUser" = $4 where "loginUser" = $5 and "idUser" = $6';//we're escaping values to avoid sql injection
+      db.query(query, [pseudo, nom, prenom, mail, decoded.login, decoded.idUser], function (err, result) {
         if (err) throw err;
         const payload = {
           admin: decoded.admin,
+          idUser: decoded.idUser,
           login: pseudo
         };
         var token = utils().createToken(payload);
         // return the information including the new token as JSON
         res.status(201).json({
+          success: true,
           message: 'Utilisateur modifié !',
           token: token,
         });
@@ -122,5 +128,24 @@ router.put('/update', auth, function (req, res) {
   });
 });
 
+router.delete('/delete', auth, function (req, res) {
+  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  let query1 = 'select count(*) from public.user where "loginUser" = $1 and "idUser" = $2 ';
+  db.query(query1, [decoded.login, decoded.idUser], function (err, result) {
+    if(result.rows[0].count === '0'){
+      res.status(409).json({
+        message: 'Utilisateur inconnu !',
+      });
+    }else{
+      let query = 'delete from public.user where "loginUser" = $1 and "idUser" = $2';//we're escaping values to avoid sql injection
+      db.query(query, [decoded.login, decoded.idUser], function (err, result) {
+        if (err) throw err;
+        res.status(201).json({
+          message: 'Utilisateur supprimé !',
+        });
+      });
+    }
+  });
+});
 
 module.exports = router;

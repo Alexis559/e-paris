@@ -39,16 +39,14 @@ export default {
   methods: {
     connectUser() {
       getLogin(this.login, this.password).then((user) => {
-        if (user.success) {
-          this.success = true;
+          this.succes = user.success;
           this.message = 'Connecté !';
           this.$store.dispatch('login', user.token).then(() => {
             document.location.href = '/';
           });
-        } else {
-          this.message = 'UTILISATEUR INCONNU';
-          this.success = false;
-        }
+      }).catch((error) => {
+        this.success = error.response.data.success;
+        this.message = error.response.data.message;
       });
     },
   },

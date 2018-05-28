@@ -1,6 +1,6 @@
 <template>
-    <div class="text-center">
-      {{ message }}
+    <div>
+    <div v-if="logged" class="text-center">
       <form @submit.prevent="updateUser" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Modifier votre profil</h1>
         <div class="text-left row">
@@ -20,21 +20,25 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Modifier</button>
       </form>
     </div>
+      <auth-fail v-else></auth-fail>
+    </div>
 </template>
 
 
 <script>
   import { updateUser, getProfilUser } from '../../api/request-api';
+  import AuthFail from "../errors/AuthFail";
 
   export default {
     name: 'UpdateProfil',
+    components: {AuthFail},
     data(){
       return {
         nomUser: '',
         prenomUser: '',
         pseudoUser: '',
         mailUser: '',
-        message: '',
+        logged: '',
       };
     },
     methods: {
@@ -48,6 +52,7 @@
           }
         });
        },
+
       getProfilUser() {
         getProfilUser().then((rep) => {
           this.nomUser = rep.result.rows[0].nomUser;
@@ -57,10 +62,9 @@
         });
       },
     },
+
     mounted() {
-      if(!this.store.getters.isLoggedIn()){
-        router.push('/');
-      }
+      this.logged = this.$store.getters.isLoggedIn;
       this.getProfilUser();
     },
   };
