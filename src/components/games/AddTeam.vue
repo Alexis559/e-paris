@@ -2,24 +2,22 @@
   <div>
     <div  v-if="logged && isAdmin" class="modal-dialog" role="document">
       <div class="modal-content">
-    <div class="modal-body text-center">
-      <div id="showConnection">
-        <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
-        <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
-      </div>
-      <form @submit.prevent="addGame" class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">Ajouter un jeu</h1>
-        <label for="gameName" class="sr-only">Pseudo</label>
-        <input v-model="gameName" type="text" id="gameName" class="form-control" placeholder="Nom du jeu" required>
-        <label for="gameDescr" class="sr-only">Password</label>
-        <textarea  v-model="gameDescr" id="gameDescr" class="form-control" placeholder="Description du jeu" required></textarea>
-        <label for="urlImg" class="sr-only">Lien image du jeu</label>
-        <input v-model="urlImg" id="urlImg" type="url" placeholder="http://" class="form-control" required>
-        <label for="inputDate" class="sr-only">Date de création</label>
-        <input v-model="dateCreation" type="date" id="inputDate" class="form-control" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter</button>
-      </form>
-    </div>
+        <div class="modal-body text-center">
+          <div id="showConnection">
+            <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
+            <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+          </div>
+          <form @submit.prevent="createTeam" class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Créer une équipe</h1>
+            <label for="nameTeam" class="sr-only">Nom de l'équipe</label>
+            <input v-model="nameTeam" type="text" id="nameTeam" class="form-control" placeholder="Nom de l'équipe" required>
+            <label for="urlImg" class="sr-only">Lien logo de l'équipe</label>
+            <input v-model="urlImg" id="urlImg" type="url" placeholder="http://" class="form-control" required>
+            <label for="dateCreation" class="sr-only">Date de création</label>
+            <input  v-model="dateCreation" type="date" id="dateCreation" class="form-control" placeholder="" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter</button>
+          </form>
+        </div>
       </div>
     </div>
     <auth-fail v-else></auth-fail>
@@ -27,16 +25,16 @@
 </template>
 
 <script>
-  import { addGame } from '../../api/request-api';
+  import { createTeam } from '../../api/request-api';
   import AuthFail from "../errors/AuthFail";
 
   export default {
-    name: 'AddGame',
+    name: 'AddTeam',
     components: {AuthFail},
+    props: ['idGame'],
     data(){
       return {
-        gameName: '',
-        gameDescr: '',
+        nameTeam: '',
         dateCreation: '',
         urlImg: '',
         message: '',
@@ -45,20 +43,14 @@
         isAdmin: '',
       };
     },
-    computed: {
-      validForm() {
-        return this.password === this.passwordConfirm && this.password !== '';
-      },
-    },
     methods: {
-      addGame() {
-        addGame(this.gameName, this.gameDescr, this.dateCreation, this.urlImg).then((response) => {
+      createTeam() {
+        createTeam(this.nameTeam, this.dateCreation, this.urlImg, this.idGame).then((response) => {
           this.success = response.success;
           this.message = response.message;
-          document.location.href = '/games';
-        }).catch((error) => {
-          this.success = error.response.data.success;
-          this.message = error.response.data.message;
+        }).catch((rep) => {
+          this.message = rep.response.data.message;
+          this.success = rep.response.data.success;
         });
       },
     },

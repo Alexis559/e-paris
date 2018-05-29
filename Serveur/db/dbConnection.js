@@ -2,7 +2,7 @@
 const pg = require('pg');
 
 const db = new pg.Pool({
-    connectionString: "postgres://ajonaxfukxhvox:dd772bc39373b73174045c50dfea730f418e315aa6eca075f8de437b464e8829@ec2-79-125-12-48.eu-west-1.compute.amazonaws.com:5432/dajcolqqjbf1tt",
+    connectionString: "postgres://mdvesgbldcwafg:bf0bb14330a723c111c3da564e552b38993315c34df7ffa4e7d1036fcc76e812@ec2-54-217-214-68.eu-west-1.compute.amazonaws.com:5432/d126edqh9bdl51",
     ssl: true,
 });
 

@@ -3,7 +3,7 @@ const router = express();
 const db = require('../db/dbConnection');
 const auth = require('../auth/access');
 
-console.log("Routeur Game");
+console.log("Routeur Match");
 
 router.get('/get', auth,function (req, res) {
     res.writeHead(200, {"Content-Type": "application/json"});

@@ -74,9 +74,21 @@ function addGame(nameGame, descrGame, dateCreation, imgGame) {
     .then(response => response.data);
 }
 
+function createTeam(nameTeam, dateCreation, imgUrl, idGame) {
+  const url = `${BASE_URL}/api/team/add`;
+  return axios.post(url, {
+    nameTeam: nameTeam,
+    dateCreation: dateCreation,
+    dateCreation: dateCreation,
+    imgUrl: imgUrl,
+    idGame: idGame,
+  })
+    .then(response => response.data);
+}
+
 function getGameByName(nameGame) {
   const url = `${BASE_URL}/api/game/get/` + nameGame;
   return axios.get(url).then(response => response.data);
 }
 
-export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser, deleteUser, addGame, getGameByName };
+export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser, deleteUser, addGame, getGameByName, createTeam};

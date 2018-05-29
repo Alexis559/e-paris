@@ -105,7 +105,7 @@ router.put('/update', auth, function (req, res) {
     //if the pseudo already exists we return an error
     if(decoded.login !== pseudo && result.rows[0].count === '1'){
       res.status(409).json({
-        succes: 'false',
+        success: 'false',
         message: 'Ce login est déjà utilisé !',
       });
     }else{

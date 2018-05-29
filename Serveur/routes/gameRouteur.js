@@ -42,16 +42,16 @@ router.post('/add', auth, function (req, res) {
     //if the pseudo already exists we return an error
     if (result.rows[0].count === 1) {
       res.status(409).json({
-        succes: 'false',
+        success: 'false',
         message: 'Ce jeu existe déjà !',
       });
     } else {
       let query1 = 'select * from public.user where "loginUser" = $1 and "idUser" = $2';
       db.query(query1, [decoded.login, decoded.idUser], function (err, result) {
         //if the pseudo already exists we return an error
-        if (result.rows[0].admin === 'false') {
+        if (result.rows[0].admin === false) {
           res.status(403).json({
-            succes: 'false',
+            success: 'false',
             message: 'Vous n\'avez pas les droits !',
           });
         } else {

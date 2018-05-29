@@ -5,7 +5,7 @@
     <div class="col-md-4 text-center"><h2>Jeux</h2></div>
     <div class="col-md-4 text-center">
       <router-link to="">
-        <button v-show="isAdmin" class="btn btn-primary" data-toggle="modal" data-target="#addGame">Ajouter un jeu</button>
+        <button v-show="isAdmin && logged" class="btn btn-primary" data-toggle="modal" data-target="#addGame">Ajouter un jeu</button>
       </router-link>
     </div>
     </div>
@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       games: '',
+      logged: '',
       isAdmin: '',
     };
   },
@@ -48,6 +49,7 @@ export default {
     },
   },
   mounted() {
+    this.logged = this.$store.getters.isLoggedIn;
     this.isAdmin = localStorage.getItem('is_admin') === 'true';
     this.getGames();
   },
