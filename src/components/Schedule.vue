@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="logged">
+    <div v-if="logged || success">
       <h3 class="text-center">Schedule Matches</h3>
       <hr/>
       <div><h1 class="badge alert-info">League Of Legends</h1></div>
@@ -34,12 +34,15 @@ export default {
     return {
       publicMatches: '',
       logged: '',
+      success: '',
     };
   },
   methods: {
     getPublicMatches() {
       getPublicMatches().then((matches) => {
         this.publicMatches = matches;
+      }).catch((rep) => {
+        this.success = rep.response.data.success;
       });
     },
   },

@@ -39,9 +39,10 @@ export default {
   methods: {
     connectUser() {
       getLogin(this.login, this.password).then((user) => {
-          this.succes = user.success;
+          this.success = user.success;
           this.message = 'Connecté !';
           this.$store.dispatch('login', user.token).then(() => {
+            localStorage.setItem('is_admin', user.admin);
             document.location.href = '/';
           });
       }).catch((error) => {

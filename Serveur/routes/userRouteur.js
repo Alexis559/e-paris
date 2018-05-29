@@ -27,7 +27,8 @@ router.post('/login', function (req, res) {
             res.status(200).json({
               success: true,
               message: 'Utilisateur connecté !',
-              token: token
+              token: token,
+              admin: result.rows[0].admin,
             });
           }else{
             res.status(401).json({
@@ -52,7 +53,7 @@ router.get('/profil', auth, function (req, res) {
   db.query(query, [decoded.login, decoded.idUser], function (err, result) {
     if (err) throw err;
     if (result.rows[0] !== undefined) {
-      res.status(200).json({success: false, result});
+      res.status(200).json({success: true, result});
     } else {
       res.status(401).json({
         success: false,
@@ -81,14 +82,14 @@ router.post('/add', function (req, res) {
           message: 'Ce login est déjà utilisé !',
         });
       }else{
-        let query = 'INSERT INTO public.user ("loginUser", "nomUser", "prenomUser", "mailUser", "dateNaissance", "password", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
-        db.query(query, [pseudo, nom, prenom, mail, date, passwordCrypt], function (err, result) {
-           if (err) throw err;
-           res.status(201).json({
-             success: true,
-             message: 'Utilisateur créé !',
-           });
-         });
+        let query = 'INSERT INTO public.user ("loginUser", "nomUser", "password", "prenomUser", "mailUser", "dateNaissance", "admin") values ($1, $2, $3, $4, $5, $6, false)';//we're escaping values to avoid sql injection
+        db.query(query, [pseudo, nom, passwordCrypt, prenom, mail, date], function (err, result) {
+          if (err) throw err;
+          res.status(201).json({
+            success: true,
+            message: 'Utilisateur créé !',
+          });
+        });
       }
     });
 });
@@ -134,6 +135,7 @@ router.delete('/delete', auth, function (req, res) {
   db.query(query1, [decoded.login, decoded.idUser], function (err, result) {
     if(result.rows[0].count === '0'){
       res.status(409).json({
+        success: false,
         message: 'Utilisateur inconnu !',
       });
     }else{
@@ -141,6 +143,7 @@ router.delete('/delete', auth, function (req, res) {
       db.query(query, [decoded.login, decoded.idUser], function (err, result) {
         if (err) throw err;
         res.status(201).json({
+          success: true,
           message: 'Utilisateur supprimé !',
         });
       });

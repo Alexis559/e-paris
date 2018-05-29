@@ -63,4 +63,20 @@ function deleteUser() {
     .then(response => response.data);
 }
 
-export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser, deleteUser };
+function addGame(nameGame, descrGame, dateCreation, imgGame) {
+  const url = `${BASE_URL}/api/game/add`;
+  return axios.post(url, {
+    nameGame: nameGame,
+    descrGame: descrGame,
+    dateCreation: dateCreation,
+    imgGame: imgGame,
+  })
+    .then(response => response.data);
+}
+
+function getGameByName(nameGame) {
+  const url = `${BASE_URL}/api/game/get/` + nameGame;
+  return axios.get(url).then(response => response.data);
+}
+
+export { getPublicMatches, getGames, getLogin, addUser, getProfilUser, updateUser, deleteUser, addGame, getGameByName };

@@ -39,6 +39,8 @@
         pseudoUser: '',
         mailUser: '',
         logged: '',
+        message: '',
+        success: '',
       };
     },
     methods: {

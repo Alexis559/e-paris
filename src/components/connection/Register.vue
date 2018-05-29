@@ -63,8 +63,11 @@ export default {
   },
   methods: {
     addUser() {
-      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then(function(response) {
+      addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((response) => {
+        this.success = response.success;
        this.message = response.message;
+       sleep(2000);
+       document.location.href = '/login';
       }).catch((error) => {
         this.success = error.response.data.success;
         this.message = error.response.data.message;

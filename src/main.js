@@ -26,13 +26,11 @@ const store = new Vuex.Store({
   },
   actions: {
     login({state, commit, rootState}, creds) {
-      console.log('login...', creds);
       commit(LOGIN); // show spinner
       return new Promise(resolve => {
         setTimeout(() => {
           localStorage.setItem('access_token', creds);
           commit(LOGIN_SUCCESS);
-          console.log(localStorage.getItem('access_token'));
           resolve();
         }, 1000);
       });
@@ -41,6 +39,7 @@ const store = new Vuex.Store({
       commit,
     }) {
       localStorage.removeItem('access_token');
+      localStorage.removeItem('is_admin');
       commit(LOGOUT);
     },
   },
