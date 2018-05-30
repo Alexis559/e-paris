@@ -5,8 +5,8 @@ if( localStorage.getItem('access_token') != null){
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('access_token');
 }
 
-//const BASE_URL = '';
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = '';
+//const BASE_URL = 'http://localhost:3000';
 
 function getPublicMatches() {
   const url = `${BASE_URL}/api/match/get`;
