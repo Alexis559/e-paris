@@ -13,6 +13,11 @@ function getGames() {
   return axios.get(url).then(response => response.data);
 }
 
+function getTeamGame(idGame) {
+  const url = `${BASE_URL}/team/get/` + idGame;
+  return axios.get(url).then(response => response.data);
+}
+
 function addGame(nameGame, descrGame, dateCreation, imgGame) {
   const url = `${BASE_URL}/game/add`;
   return axios.post(url, {
@@ -35,9 +40,9 @@ function createTeam(nameTeam, dateCreation, imgUrl, idGame) {
     .then(response => response.data);
 }
 
-function getGameByName(nameGame) {
-  const url = `${BASE_URL}/game/get/` + nameGame;
+function getGameById(idGame) {
+  const url = `${BASE_URL}/game/get/` + idGame;
   return axios.get(url).then(response => response.data);
 }
 
-export { getGames, addGame, getGameByName, createTeam};
+export { getGames, addGame, getGameById, createTeam, getTeamGame };

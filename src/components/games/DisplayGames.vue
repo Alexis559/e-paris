@@ -11,7 +11,7 @@
     </div>
     <div class="card-deck text-center">
       <div class="col-md-6" v-for="(game, index) in games" :key='index'>
-        <router-link :to="'/games/' + game.nameGame">
+        <router-link :to="'/games/' + game.idGame">
         <div class="col-mb-3">
         <div  v-bind:style="{ 'background-image': 'url(' + game.imgGame + ')' }" style="color: ghostwhite; opacity: 0.85; background-position: center; background-repeat: no-repeat;">
           <div>
@@ -34,7 +34,7 @@ import { isAdmin, isLogged } from '../../auth/config';
 
 export default {
   name: 'DisplayGames',
-  components: {AddGame},
+  components: { AddGame },
   data() {
     return {
       games: '',

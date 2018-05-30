@@ -7,7 +7,18 @@ const jwt = require('jsonwebtoken');
 
 console.log("Routeur Team");
 
-//add game
+router.get('/get/:idgame', function (req, res) {
+  var idgame = req.params.idgame;
+  let query = 'SELECT * FROM public.team where "idTeam" in (SELECT "idTeam" from public.playsin where "idGame" = $1)';
+  console.log(query);
+  console.log(idgame);
+  db.query(query, [idgame], function (err, result) {
+    if (err) throw err;
+    res.status(200).json(result);
+  });
+});
+
+
 router.post('/add', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
   let nameTeam = req.body.nameTeam;

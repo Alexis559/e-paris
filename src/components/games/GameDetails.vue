@@ -1,7 +1,8 @@
 <template>
   <div>
+    <div v-if="this.success">
     <add-team :idGame="idGame" class="modal fade" id="createTeam" tabindex="1" role="dialog" aria-labelledby="Ajouter une équipe" aria-hidden="true"></add-team>
-  <div id="showImgGame" v-bind:style="{ 'background-image': 'url(' + this.imgUrl + ')' }" style="color: ghostwhite; opacity: 0.85; background-position: center; background-repeat: no-repeat;">
+  <div id="showImgGame" v-bind:style="{ 'background-image': 'url(' + this.imgUrl + ')' }" style="background-attachment: fixed; color: ghostwhite; background-position: center; background-repeat: no-repeat;">
     <div v-if="success === true" class="container">
       <div class="row">
         <div class="col-md-4"></div>
@@ -16,22 +17,26 @@
         <p><b>Date de création:</b> {{ dateCreation}}</p>
         <p><b>Description:</b> {{ description }}</p>
       </div>
+      <div>
+        <display-team :idGame="this.$route.params.idGame"></display-team>
+      </div>
     </div>
+  </div>
+  </div>
     <not-found v-else></not-found>
   </div>
-  </div>
 </template>
-
 <script>
 
-import { getGameByName } from '../../api/game_api';
+import { getGameById } from '../../api/game_api';
 import NotFound from '../errors/Notfound';
 import AddTeam from './AddTeam';
 import { isAdmin, isLogged } from '../../auth/config';
+import DisplayTeam from './DisplayTeam';
 
 export default {
   name: 'GameDetails',
-  components: { NotFound, AddTeam },
+  components: { DisplayTeam, NotFound, AddTeam },
   data() {
     return {
       nameGame: '',
@@ -45,8 +50,8 @@ export default {
     };
   },
   methods: {
-    getGameByName(nameGame) {
-      getGameByName(nameGame).then((rep) => {
+    getGameById(idGame) {
+      getGameById(idGame).then((rep) => {
         this.success = rep.success;
         this.nameGame = rep.result.rows[0].nameGame;
         this.description = rep.result.rows[0].description;
@@ -59,9 +64,9 @@ export default {
     },
   },
   mounted() {
-    this.logged = isLogged()
+    this.logged = isLogged();
     this.isAdmin = isAdmin();
-    this.getGameByName(this.$route.params.nameGame);
+    this.getGameById(this.$route.params.idGame);
   },
 };
 </script>
@@ -69,7 +74,7 @@ export default {
 <style scoped>
   .container{
     background-color: black;
-    opacity: 0.8;
+    opacity: 0.9;
   }
   button{
     margin-left: 10px;
@@ -78,7 +83,7 @@ export default {
     margin-top: 50px;
   }
   #showImgGame{
-    height: calc(100vh - 66px);
+    min-height: calc(100vh - 66px);
   }
   .row{
     padding-top: 5vh;

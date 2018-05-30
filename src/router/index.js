@@ -57,7 +57,7 @@ export default new Router({
       component: AddGame,
     },
     {
-      path: '/games/:nameGame',
+      path: '/games/:idGame',
       name: 'Game Details',
       component: GameDetails,
     },

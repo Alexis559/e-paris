@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/routes/gameRouteur.js" line="18" mnemonic="5" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8a347c7e-3398-4944-939a-4960bebb64b3" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -14,18 +17,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dbConnection.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/dbConnection.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="183" selection-start-line="4" selection-start-column="183" selection-end-line="4" selection-end-column="183" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="error.pug" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/error.pug">
           <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="auth.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/auth/auth.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
@@ -56,7 +59,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file leaf-file-name="userRouteur.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="userRouteur.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/userRouteur.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="151">
@@ -65,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gameRouteur.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gameRouteur.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/gameRouteur.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="44" column="22" lean-forward="true" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+            <state relative-caret-position="153">
+              <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -77,8 +80,8 @@
       <file leaf-file-name="teamRouteur.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/teamRouteur.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="29" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+            <state relative-caret-position="204">
+              <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -116,9 +119,9 @@
         <option value="$PROJECT_DIR$/routes/teamRouter.js" />
         <option value="$PROJECT_DIR$/routes/routeur.js" />
         <option value="$PROJECT_DIR$/routes/matchRouteur.js" />
-        <option value="$PROJECT_DIR$/routes/gameRouteur.js" />
-        <option value="$PROJECT_DIR$/routes/teamRouteur.js" />
         <option value="$PROJECT_DIR$/routes/userRouteur.js" />
+        <option value="$PROJECT_DIR$/routes/teamRouteur.js" />
+        <option value="$PROJECT_DIR$/routes/gameRouteur.js" />
       </list>
     </option>
   </component>
@@ -210,15 +213,15 @@
       <workItem from="1527437372305" duration="11490000" />
       <workItem from="1527499464216" duration="21810000" />
       <workItem from="1527586222029" duration="20487000" />
-      <workItem from="1527692823603" duration="3169000" />
+      <workItem from="1527692823603" duration="9077000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115529000" />
+    <option name="totallyTimeSpent" value="121437000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="878" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -227,7 +230,7 @@
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info id="npm" order="2" sideWeight="0.500846" side_tool="true" weight="0.18374091" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.19137466" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28167117" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.23719676" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" visible="true" weight="0.13945803" />
       <window_info id="Project Explorer" order="4" />
@@ -497,13 +500,6 @@
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/auth/auth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auth/access.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -548,10 +544,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/gameRouteur.js">
+    <entry file="file://$PROJECT_DIR$/routes/userRouteur.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="22" lean-forward="true" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+        <state relative-caret-position="151">
+          <caret line="107" column="22" lean-forward="true" selection-start-line="107" selection-start-column="22" selection-end-line="107" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auth/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -564,15 +567,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/teamRouteur.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="29" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+        <state relative-caret-position="204">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/userRouteur.js">
+    <entry file="file://$PROJECT_DIR$/routes/gameRouteur.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="107" column="22" lean-forward="true" selection-start-line="107" selection-start-column="22" selection-end-line="107" selection-end-column="22" />
+        <state relative-caret-position="153">
+          <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
         </state>
       </provider>
     </entry>

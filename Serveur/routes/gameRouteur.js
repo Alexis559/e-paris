@@ -14,20 +14,24 @@ router.get('/get', function (req, res) {
     });
 });
 
-router.get('/get/:nameGame', function (req, res) {
-  var namegame = req.params.nameGame;
-  let query = 'SELECT * from public.game where "nameGame" = $1';
-  db.query(query, [namegame], function (err, result) {
-    if (err) throw err;
-    if (result.rows[0] !== undefined) {
-      res.status(200).json({success: true, result});
-    } else {
-      res.status(401).json({
-        success: false,
-        message: 'Jeu inconnu !'
-      });
-    }
-  });
+router.get('/get/:idGame', function (req, res) {
+  var idGame = parseInt(req.params.idGame);
+  if(isNaN(idGame)) {
+    res.status(404).json({success: false, message: 'Jeu inconnu !'});
+  }else{
+    let query = 'SELECT * from public.game where "idGame" = $1';
+    db.query(query, [idGame], function (err, result) {
+      if (err) throw err;
+      if (result.rows[0] !== undefined) {
+        res.status(200).json({success: true, result});
+      } else {
+        res.status(401).json({
+          success: false,
+          message: 'Jeu inconnu !'
+        });
+      }
+    });
+  }
 });
 
 //add game
