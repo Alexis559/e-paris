@@ -24,12 +24,13 @@
 </template>
 
 <script>
-import { getPublicMatches } from '../api/request-api';
-import AuthFail from "./errors/AuthFail";
+import { getPublicMatches } from '../api/match_api';
+import AuthFail from './errors/AuthFail';
+import { isLogged} from '../auth/config';
 
 export default {
   name: 'publicMatches',
-  components: {AuthFail},
+  components: { AuthFail },
   data() {
     return {
       publicMatches: '',
@@ -47,7 +48,7 @@ export default {
     },
   },
   mounted() {
-    this.logged = this.$store.getters.isLoggedIn;
+    this.logged = isLogged();
     this.getPublicMatches();
   },
 };

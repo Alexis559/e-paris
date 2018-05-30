@@ -20,7 +20,7 @@ router.post('/add', auth, function (req, res) {
     //if the pseudo already exists we return an error
     if (result.rows[0].count === '1') {
       res.status(409).json({
-        success: 'false',
+        success: false,
         message: 'Cette team existe déjà !',
       });
     } else {
@@ -30,7 +30,7 @@ router.post('/add', auth, function (req, res) {
         console.log(result);
         if (result.rows[0].admin === false) {
           res.status(403).json({
-            success: 'false',
+            success: false,
             message: 'Vous n\'avez pas les droits !',
           });
         } else {
@@ -43,7 +43,7 @@ router.post('/add', auth, function (req, res) {
             db.query(query2, [idGame, result.rows[0].idTeam], function (err) {
               if (err) throw err;
               res.status(201).json({
-                success: 'true',
+                success: true,
                 message: 'Team créée et ajoutée au jeu !',
               });
             });

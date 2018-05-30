@@ -26,50 +26,49 @@
 
 
 <script>
-  import { updateUser, getProfilUser } from '../../api/request-api';
-  import AuthFail from "../errors/AuthFail";
+import { updateUser, getProfilUser } from '../../api/user_api';
+import AuthFail from '../errors/AuthFail';
+import { isLogged } from '../../auth/config';
 
-  export default {
-    name: 'UpdateProfil',
-    components: {AuthFail},
-    data(){
-      return {
-        nomUser: '',
-        prenomUser: '',
-        pseudoUser: '',
-        mailUser: '',
-        logged: '',
-        message: '',
-        success: '',
-      };
+export default {
+  name: 'UpdateProfil',
+  components: {AuthFail},
+  data(){
+    return {
+      nomUser: '',
+      prenomUser: '',
+      pseudoUser: '',
+      mailUser: '',
+      logged: '',
+      message: '',
+      success: '',
+    };
+  },
+  methods: {
+    updateUser() {
+      updateUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser).then((rep) => {
+        if (rep.message === 'Utilisateur modifié !') {
+          this.$store.dispatch('logout');
+          this.$store.dispatch('login', rep.token).then(() => {
+            document.location.href = '/profil';
+          });
+        }
+      });
     },
-    methods: {
-      updateUser() {
-        updateUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser).then((rep) =>  {
-          if(rep.message === 'Utilisateur modifié !'){
-            this.$store.dispatch('logout');
-            this.$store.dispatch('login', rep.token).then(() => {
-              document.location.href = '/profil';
-            });
-          }
-        });
-       },
-
-      getProfilUser() {
-        getProfilUser().then((rep) => {
-          this.nomUser = rep.result.rows[0].nomUser;
-          this.prenomUser = rep.result.rows[0].prenomUser;
-          this.pseudoUser = rep.result.rows[0].loginUser;
-          this.mailUser = rep.result.rows[0].mailUser;
-        });
-      },
+    getProfilUser() {
+      getProfilUser().then((rep) => {
+        this.nomUser = rep.result.rows[0].nomUser;
+        this.prenomUser = rep.result.rows[0].prenomUser;
+        this.pseudoUser = rep.result.rows[0].loginUser;
+        this.mailUser = rep.result.rows[0].mailUser;
+      });
     },
-
-    mounted() {
-      this.logged = this.$store.getters.isLoggedIn;
-      this.getProfilUser();
-    },
-  };
+  },
+  mounted() {
+    this.logged = isLogged();
+    this.getProfilUser();
+  },
+};
 </script>
 
 <style scoped>

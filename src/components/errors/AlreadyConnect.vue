@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'AlreadyConnect',
-  };
+export default {
+  name: 'AlreadyConnect',
+};
 </script>
 
 <style scoped>

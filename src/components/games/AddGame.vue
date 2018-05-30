@@ -2,6 +2,9 @@
   <div>
     <div  v-if="logged && isAdmin" class="modal-dialog" role="document">
       <div class="modal-content">
+        <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
     <div class="modal-body text-center">
       <div id="showConnection">
         <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
@@ -27,46 +30,47 @@
 </template>
 
 <script>
-  import { addGame } from '../../api/request-api';
-  import AuthFail from "../errors/AuthFail";
+import { addGame } from '../../api/game_api';
+import AuthFail from '../errors/AuthFail';
+import { isAdmin, isLogged } from '../../auth/config';
 
-  export default {
-    name: 'AddGame',
-    components: {AuthFail},
-    data(){
-      return {
-        gameName: '',
-        gameDescr: '',
-        dateCreation: '',
-        urlImg: '',
-        message: '',
-        success: '',
-        logged: '',
-        isAdmin: '',
-      };
+export default {
+  name: 'AddGame',
+  components: { AuthFail },
+  data() {
+    return {
+      gameName: '',
+      gameDescr: '',
+      dateCreation: '',
+      urlImg: '',
+      message: '',
+      success: '',
+      logged: '',
+      isAdmin: '',
+    };
+  },
+  computed: {
+    validForm() {
+      return this.password === this.passwordConfirm && this.password !== '';
     },
-    computed: {
-      validForm() {
-        return this.password === this.passwordConfirm && this.password !== '';
-      },
+  },
+  methods: {
+    addGame() {
+      addGame(this.gameName, this.gameDescr, this.dateCreation, this.urlImg).then((response) => {
+        this.success = response.success;
+        this.message = response.message;
+        document.location.href = '/games';
+      }).catch((error) => {
+        this.success = error.response.data.success;
+        this.message = error.response.data.message;
+      });
     },
-    methods: {
-      addGame() {
-        addGame(this.gameName, this.gameDescr, this.dateCreation, this.urlImg).then((response) => {
-          this.success = response.success;
-          this.message = response.message;
-          document.location.href = '/games';
-        }).catch((error) => {
-          this.success = error.response.data.success;
-          this.message = error.response.data.message;
-        });
-      },
-    },
-    mounted() {
-      this.isAdmin = localStorage.getItem('is_admin') === 'true';
-      this.logged = this.$store.getters.isLoggedIn;
-    },
-  };
+  },
+  mounted() {
+    this.isAdmin = isAdmin();
+    this.logged = isLogged();
+  },
+};
 </script>
 
 <style scoped>
@@ -117,12 +121,10 @@
     width: 100%;
     max-width: 330px;
     margin: auto;
-    margin-top: 10vh;
     height: 10vh;
   }
 
-  #showConnection h5{
-    margin-top: 5vh;
+  .close{
+    margin-right: 5px;
   }
-
 </style>

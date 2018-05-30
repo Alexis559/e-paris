@@ -2,6 +2,9 @@
   <div>
     <div  v-if="logged && isAdmin" class="modal-dialog" role="document">
       <div class="modal-content">
+        <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <div class="modal-body text-center">
           <div id="showConnection">
             <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
@@ -25,40 +28,41 @@
 </template>
 
 <script>
-  import { createTeam } from '../../api/request-api';
-  import AuthFail from "../errors/AuthFail";
+import { createTeam } from '../../api/game_api';
+import AuthFail from '../errors/AuthFail';
+import { isAdmin, isLogged } from '../../auth/config';
 
-  export default {
-    name: 'AddTeam',
-    components: {AuthFail},
-    props: ['idGame'],
-    data(){
-      return {
-        nameTeam: '',
-        dateCreation: '',
-        urlImg: '',
-        message: '',
-        success: '',
-        logged: '',
-        isAdmin: '',
-      };
+export default {
+  name: 'AddTeam',
+  components: { AuthFail },
+  props: ['idGame'],
+  data() {
+    return {
+      nameTeam: '',
+      dateCreation: '',
+      urlImg: '',
+      message: '',
+      success: '',
+      logged: '',
+      isAdmin: '',
+    };
+  },
+  methods: {
+    createTeam() {
+      createTeam(this.nameTeam, this.dateCreation, this.urlImg, this.idGame).then((response) => {
+        this.success = response.success;
+        this.message = response.message;
+      }).catch((rep) => {
+        this.message = rep.response.data.message;
+        this.success = rep.response.data.success;
+      });
     },
-    methods: {
-      createTeam() {
-        createTeam(this.nameTeam, this.dateCreation, this.urlImg, this.idGame).then((response) => {
-          this.success = response.success;
-          this.message = response.message;
-        }).catch((rep) => {
-          this.message = rep.response.data.message;
-          this.success = rep.response.data.success;
-        });
-      },
-    },
-    mounted() {
-      this.isAdmin = localStorage.getItem('is_admin') === 'true';
-      this.logged = this.$store.getters.isLoggedIn;
-    },
-  };
+  },
+  mounted() {
+    this.isAdmin = isAdmin();
+    this.logged = isLogged();
+  },
+};
 </script>
 
 <style scoped>
@@ -109,12 +113,10 @@
     width: 100%;
     max-width: 330px;
     margin: auto;
-    margin-top: 10vh;
     height: 10vh;
   }
 
-  #showConnection h5{
-    margin-top: 5vh;
+  .close{
+    margin-right: 5px;
   }
-
 </style>

@@ -28,8 +28,9 @@
 
 <script>
 
-import { getGames } from '../../api/request-api';
-import AddGame from "./AddGame";
+import { getGames } from '../../api/game_api';
+import AddGame from './AddGame';
+import { isAdmin, isLogged } from '../../auth/config';
 
 export default {
   name: 'DisplayGames',
@@ -49,8 +50,8 @@ export default {
     },
   },
   mounted() {
-    this.logged = this.$store.getters.isLoggedIn;
-    this.isAdmin = localStorage.getItem('is_admin') === 'true';
+    this.logged = isLogged();
+    this.isAdmin = isAdmin();
     this.getGames();
   },
 };

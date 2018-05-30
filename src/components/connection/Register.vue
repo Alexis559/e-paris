@@ -36,13 +36,14 @@
 </template>
 
 <script>
-import { addUser } from '../../api/request-api';
-import AlreadyConnect from "../errors/AlreadyConnect";
+import { addUser } from '../../api/user_api';
+import AlreadyConnect from '../errors/AlreadyConnect';
+import { isLogged } from '../../auth/config';
 
 export default {
   name: 'Register',
-  components: {AlreadyConnect},
-  data(){
+  components: { AlreadyConnect },
+  data() {
     return {
       nomUser: '',
       prenomUser: '',
@@ -65,9 +66,9 @@ export default {
     addUser() {
       addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((response) => {
         this.success = response.success;
-       this.message = response.message;
-       sleep(2000);
-       document.location.href = '/login';
+        this.message = response.message;
+        sleep(2000);
+        document.location.href = '/login';
       }).catch((error) => {
         this.success = error.response.data.success;
         this.message = error.response.data.message;
@@ -75,7 +76,7 @@ export default {
     },
   },
   mounted() {
-    this.logged = this.$store.getters.isLoggedIn;
+    this.logged = isLogged();
   },
 };
 </script>

@@ -20,12 +20,13 @@
 </template>
 
 <script>
-import { getLogin } from '../../api/request-api';
-import AlreadyConnect from "../errors/AlreadyConnect";
+import { getLogin } from '../../api/user_api';
+import AlreadyConnect from '../errors/AlreadyConnect';
+import { isLogged } from '../../auth/config';
 
 export default {
   name: 'LogIn',
-  components: {AlreadyConnect},
+  components: { AlreadyConnect },
   data() {
     return {
       login: '',
@@ -39,12 +40,12 @@ export default {
   methods: {
     connectUser() {
       getLogin(this.login, this.password).then((user) => {
-          this.success = user.success;
-          this.message = 'Connecté !';
-          this.$store.dispatch('login', user.token).then(() => {
-            localStorage.setItem('is_admin', user.admin);
-            document.location.href = '/';
-          });
+        this.success = user.success;
+        this.message = 'Connecté !';
+        this.$store.dispatch('login', user.token).then(() => {
+          localStorage.setItem('is_admin', user.admin);
+          document.location.href = '/';
+        });
       }).catch((error) => {
         this.success = error.response.data.success;
         this.message = error.response.data.message;
@@ -52,7 +53,7 @@ export default {
     },
   },
   mounted() {
-    this.logged = this.$store.getters.isLoggedIn;
+    this.logged = isLogged();
   },
 };
 </script>

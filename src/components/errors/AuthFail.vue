@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'AuthFail',
-  };
+export default {
+  name: 'AuthFail',
+};
 </script>
 
 <style scoped>

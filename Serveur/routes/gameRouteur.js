@@ -40,9 +40,9 @@ router.post('/add', auth, function (req, res) {
   let query2 = 'select count(*) from public.game where "nameGame" = $1';
   db.query(query2, [nameGame], function (err, result) {
     //if the pseudo already exists we return an error
-    if (result.rows[0].count === 1) {
+    if (result.rows[0].count === '1'  ) {
       res.status(409).json({
-        success: 'false',
+        success: false,
         message: 'Ce jeu existe déjà !',
       });
     } else {
@@ -51,7 +51,7 @@ router.post('/add', auth, function (req, res) {
         //if the pseudo already exists we return an error
         if (result.rows[0].admin === false) {
           res.status(403).json({
-            success: 'false',
+            success: false,
             message: 'Vous n\'avez pas les droits !',
           });
         } else {

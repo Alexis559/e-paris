@@ -24,46 +24,46 @@
 
 <script>
 
-  import { getGameByName } from '../../api/request-api';
-  import NotFound from "../errors/Notfound";
-  import AddTeam from "./AddTeam";
+import { getGameByName } from '../../api/game_api';
+import NotFound from '../errors/Notfound';
+import AddTeam from './AddTeam';
+import { isAdmin, isLogged } from '../../auth/config';
 
-
-  export default {
-    name: 'GameDetails',
-    components: {NotFound, AddTeam},
-    data() {
-      return {
-        nameGame: '',
-        description: '',
-        dateCreation: '',
-        imgUrl: '',
-        logged: '',
-        isAdmin: '',
-        idGame: '',
-        success: true,
-      };
+export default {
+  name: 'GameDetails',
+  components: { NotFound, AddTeam },
+  data() {
+    return {
+      nameGame: '',
+      description: '',
+      dateCreation: '',
+      imgUrl: '',
+      logged: '',
+      isAdmin: '',
+      idGame: '',
+      success: true,
+    };
+  },
+  methods: {
+    getGameByName(nameGame) {
+      getGameByName(nameGame).then((rep) => {
+        this.success = rep.success;
+        this.nameGame = rep.result.rows[0].nameGame;
+        this.description = rep.result.rows[0].description;
+        this.imgUrl = rep.result.rows[0].imgGame;
+        this.idGame = rep.result.rows[0].idGame;
+        this.dateCreation = rep.result.rows[0].dateCreation;
+      }).catch((rep) => {
+        this.success = rep.response.data.success;
+      });
     },
-    methods: {
-      getGameByName(nameGame) {
-        getGameByName(nameGame).then((rep) => {
-          this.success = rep.success;
-          this.nameGame = rep.result.rows[0].nameGame;
-          this.description = rep.result.rows[0].description;
-          this.imgUrl = rep.result.rows[0].imgGame;
-          this.idGame = rep.result.rows[0].idGame;
-          this.dateCreation = rep.result.rows[0].dateCreation;
-        }).catch((rep) => {
-          this.success = rep.response.data.success;
-        });
-      },
-    },
-    mounted() {
-      this.logged = this.$store.getters.isLoggedIn;
-      this.isAdmin = localStorage.getItem('is_admin') === 'true';
-      this.getGameByName(this.$route.params.nameGame);
-    },
-  };
+  },
+  mounted() {
+    this.logged = isLogged()
+    this.isAdmin = isAdmin();
+    this.getGameByName(this.$route.params.nameGame);
+  },
+};
 </script>
 
 <style scoped>
@@ -80,7 +80,6 @@
   #showImgGame{
     height: calc(100vh - 66px);
   }
-
   .row{
     padding-top: 5vh;
   }
