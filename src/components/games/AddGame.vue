@@ -32,7 +32,7 @@
 <script>
 import { addGame } from '../../api/game_api';
 import AuthFail from '../errors/AuthFail';
-import { isAdmin, isLogged } from '../../auth/config';
+import { isAdmin, isLogged } from '../../config/config';
 
 export default {
   name: 'AddGame',

@@ -4,9 +4,7 @@
     <div class="col-md-4"></div>
     <div class="col-md-4 text-center"><h2>Jeux</h2></div>
     <div class="col-md-4 text-center">
-      <router-link to="">
         <button v-show="isAdmin && logged" class="btn btn-primary" data-toggle="modal" data-target="#addGame">Ajouter un jeu</button>
-      </router-link>
     </div>
     </div>
     <div class="card-deck text-center">
@@ -30,7 +28,7 @@
 
 import { getGames } from '../../api/game_api';
 import AddGame from './AddGame';
-import { isAdmin, isLogged } from '../../auth/config';
+import { isAdmin, isLogged } from '../../config/config';
 
 export default {
   name: 'DisplayGames',

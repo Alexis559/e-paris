@@ -14,7 +14,7 @@
         </div>
       </div>
       <div id="infos">
-        <p><b>Date de création:</b> {{ dateCreation}}</p>
+        <p><b>Date de création:</b> {{ dateCreation | formatDate}}</p>
         <p><b>Description:</b> {{ description }}</p>
       </div>
       <div>
@@ -30,9 +30,9 @@
 
 import { getGameById } from '../../api/game_api';
 import NotFound from '../errors/Notfound';
-import AddTeam from './AddTeam';
-import { isAdmin, isLogged } from '../../auth/config';
-import DisplayTeam from './DisplayTeam';
+import AddTeam from '../team/AddTeam';
+import { isAdmin, isLogged } from '../../config/config';
+import DisplayTeam from '../team/DisplayTeam';
 
 export default {
   name: 'GameDetails',

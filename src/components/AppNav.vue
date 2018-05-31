@@ -12,7 +12,7 @@
           <router-link to="/" class="navbar-brand nav-link">Accueil</router-link>
         </li>
         <li>
-          <router-link to="/programme" class="navbar-brand nav-link">Programme</router-link>
+          <router-link to="/match" class="navbar-brand nav-link">Match</router-link>
         </li>
         <li>
           <router-link to="/games" class="navbar-brand nav-link">Jeux</router-link>
@@ -20,10 +20,10 @@
       </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <router-link to="/login" v-if="!isLoggedIn"><button class="btn btn-info log">Log in</button></router-link>
-        <router-link to="/register" v-if="!isLoggedIn"><button class="btn btn-success log">Sign up</button></router-link>
-        <router-link to="/profil" v-if="isLoggedIn"> <button class="btn btn-info log"><img src="../assets/icons/open-iconic-master/svg/person.svg" alt="person"/>User</button></router-link>
-        <router-link to="" v-if="isLoggedIn"><button @click="logout" class="btn btn-danger log">Log out</button></router-link>
+        <router-link to="/login" v-if="!logged"><button class="btn btn-info log">Log in</button></router-link>
+        <router-link to="/register" v-if="!logged"><button class="btn btn-success log">Sign up</button></router-link>
+        <router-link to="/profil" v-if="logged"> <button class="btn btn-info log"><img src="../assets/icons/open-iconic-master/svg/person.svg" alt="person"/>User</button></router-link>
+        <router-link to="" v-if="logged"><button @click="logout" class="btn btn-danger log">Log out</button></router-link>
       </li>
     </ul>
     </div>
@@ -31,9 +31,16 @@
 </template>
 
 <script>
+  import {isAdmin, isLogged} from "../config/config";
 
-export default {
+  export default {
   name: 'app-nav',
+  data() {
+    return{
+      admin: '',
+      logged: '',
+    };
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout');
@@ -44,6 +51,10 @@ export default {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
+  },
+  mounted() {
+    this.admin = isAdmin();
+    this.logged = isLogged();
   },
 };
 </script>

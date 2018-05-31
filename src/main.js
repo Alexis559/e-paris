@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import App from './App';
 import router from './router';
+import moment from 'moment';
 const LOGIN = 'LOGIN';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGOUT = 'LOGOUT';
@@ -50,6 +51,17 @@ const store = new Vuex.Store({
   },
 });
 
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD/MM/YYYY')
+  }
+});
+
+Vue.filter('getTimeFromNow', function(value) {
+  if (value) {
+    return moment(String(value), "YYYY-MM-DD").fromNow();
+  }
+});
 
 new Vue({
   el: '#app',
@@ -57,4 +69,4 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
-});
+})

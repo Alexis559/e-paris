@@ -38,7 +38,7 @@
 <script>
 import { addUser } from '../../api/user_api';
 import AlreadyConnect from '../errors/AlreadyConnect';
-import { isLogged } from '../../auth/config';
+import { isLogged } from '../../config/config';
 
 export default {
   name: 'Register',

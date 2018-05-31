@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getTeamGame } from '../../api/game_api';
+import { getTeamGame } from '../../api/team_api';
 
 
 export default {

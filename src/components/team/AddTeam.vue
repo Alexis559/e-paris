@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { createTeam } from '../../api/game_api';
+import { createTeam } from '../../api/team_api';
 import AuthFail from '../errors/AuthFail';
-import { isAdmin, isLogged } from '../../auth/config';
+import { isAdmin, isLogged } from '../../config/config';
 
 export default {
   name: 'AddTeam',

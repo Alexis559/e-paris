@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Schedule from '../components/Schedule';
+import Match from '../components/match/DisplayMatch';
 import Accueil from '../components/Accueil';
 import NotFound from '../components/errors/Notfound';
 import Games from '../components/games/DisplayGames';
@@ -10,6 +10,7 @@ import UserProfil from '../components/profil/UserProfil';
 import UserProfilUpdate from '../components/profil/UpdateProfil';
 import AddGame from '../components/games/AddGame';
 import GameDetails from '../components/games/GameDetails';
+import MatchDetails from '../components/match/MatchDetails';
 
 Vue.use(Router);
 
@@ -22,9 +23,9 @@ export default new Router({
       component: Accueil,
     },
     {
-      path: '/programme',
-      name: 'Schedule',
-      component: Schedule,
+      path: '/match',
+      name: 'Match',
+      component: Match,
     },
     {
       path: '/games',
@@ -60,6 +61,11 @@ export default new Router({
       path: '/games/:idGame',
       name: 'Game Details',
       component: GameDetails,
+    },
+    {
+      path: '/match/details/:idMatch',
+      name: 'Match Details',
+      component: MatchDetails,
     },
     {
       path: '*',

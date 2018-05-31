@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getBaseUrl } from '../auth/config';
+import { getBaseUrl } from '../config/config';
 
 // we add the token for each request if it's defined
 if (localStorage.getItem('access_token') != null) {

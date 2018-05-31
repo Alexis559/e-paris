@@ -6,7 +6,7 @@
       </div>
       <div class="row  box-shadow">
         <div class="col-md-4"></div>
-        <div class="col-md-4 text-center"><h2>{{ prenom }} {{ nom }} ({{ login }})</h2> <h4>Score: {{ score }}</h4></div>
+        <div class="col-md-4 text-center"><h2>{{ prenom }} {{ nom }} ({{ login }})</h2> <h4 class="bg-warning text-dark">Score: {{ score }}</h4></div>
         <div class="col-md-4 text-center">
           <router-link to="/profil/update">
             <button class="btn btn-primary">Modifier profil</button>
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div id="infos">
-        Date de création: {{ dateCreation}}
+        Date de création: {{ dateCreation | formatDate}}
       </div>
     </div>
     <auth-fail v-else></auth-fail>
@@ -47,7 +47,7 @@
 
 import { getProfilUser, deleteUser } from '../../api/user_api';
 import AuthFail from '../errors/AuthFail';
-import { isLogged } from '../../auth/config';
+import { isLogged } from '../../config/config';
 
 export default {
   name: 'userProfil',
@@ -58,7 +58,7 @@ export default {
       prenom: '',
       dateCreation: '',
       login: '',
-      score: '0',
+      score: '',
       logged: '',
       message: '',
       success: true,
@@ -71,6 +71,7 @@ export default {
         this.nom = rep.result.rows[0].nomUser;
         this.prenom = rep.result.rows[0].prenomUser;
         this.login = rep.result.rows[0].loginUser;
+        this.score = rep.result.rows[0].score;
         this.dateCreation = rep.result.rows[0].dateCreation;
       }).catch((rep) => {
         this.message = rep.response.data.message;

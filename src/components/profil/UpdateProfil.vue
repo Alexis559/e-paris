@@ -28,7 +28,7 @@
 <script>
 import { updateUser, getProfilUser } from '../../api/user_api';
 import AuthFail from '../errors/AuthFail';
-import { isLogged } from '../../auth/config';
+import { isLogged } from '../../config/config';
 
 export default {
   name: 'UpdateProfil',
