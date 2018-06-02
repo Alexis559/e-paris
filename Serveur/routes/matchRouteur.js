@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express();
 const auth = require('../auth/access');
+const utils = require('../auth/auth');
 const jwt = require('jsonwebtoken');
-var db = require('../db/dbConnection');
+const db = require('../db/dbConnection');
+const uuid = require('../auth/uuid');
+
 
 
 console.log("Routeur Match");
 
-//add game
+//Add a match for a game
 router.post('/add', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   let idTeam1 = req.body.idTeam1;
   let idTeam2 = req.body.idTeam2;
   let dateMatch = req.body.dateMatch;
@@ -40,16 +43,24 @@ router.post('/add', auth, function (req, res) {
               message: 'Vous n\'avez pas les droits !',
             });
           } else {
-            let query = 'INSERT INTO public.match ("idTeam1", "idTeam2", "dateMatch", "scoreTeam1", "scoreTeam2", "idGame", "description") values ($1, $2, $3, $4, $5, $6, $7)';//we're escaping values to avoid sql injection
-            client.query(query, [idTeam1, idTeam2, dateMatch, -1, -1, idGame, description], function (err) {
-              if (err) throw err;
+            if (new Date(dateMatch) < new Date()) {
               done();
-              // return the information including the new token as JSON
-              res.status(201).json({
-                success: true,
-                message: 'Match ajouté !',
+              res.status(409).json({
+                success: false,
+                message: 'Le date est passée !',
               });
-            });
+            }else{
+              let query = 'INSERT INTO public.match ("idTeam1", "idTeam2", "dateMatch", "scoreTeam1", "scoreTeam2", "idGame", "description") values ($1, $2, $3, $4, $5, $6, $7)';//we're escaping values to avoid sql injection
+              client.query(query, [idTeam1, idTeam2, dateMatch, -1, -1, idGame, description], function (err) {
+                if (err) throw err;
+                done();
+                // return the information including the new token as JSON
+                res.status(201).json({
+                  success: true,
+                  message: 'Match ajouté !',
+                });
+              });
+            }
           }
         });
       }
@@ -57,13 +68,14 @@ router.post('/add', auth, function (req, res) {
   })
 });
 
+//Get the matches
 router.get('/get', auth, function (req, res) {
   db.db.connect(function (err, client, done) {
     if (err) {
       done();
       throw err;
     }
-    client.query("SELECT * from public.match;", (err, result) => {
+    client.query('SELECT * from public.match order by "dateMatch"', (err, result) => {
       done();
       if (err) throw err;
       res.status(200).json(result.rows);
@@ -71,6 +83,8 @@ router.get('/get', auth, function (req, res) {
   });
 });
 
+
+//Get a match by his id
 router.get('/get/:idmatch', auth, function (req, res) {
   var idMatch = parseInt(req.params.idmatch);
   db.db.connect(function (err, client, done) {
@@ -92,9 +106,9 @@ router.get('/get/:idmatch', auth, function (req, res) {
   });
 });
 
-//add game
+//Mettre a jour les résultats d'un match
 router.post('/result/:idmatch', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   var idMatch = parseInt(req.params.idmatch);
   let scoreTeam1 = req.body.scoreTeam1;
   let scoreTeam2 = req.body.scoreTeam2;

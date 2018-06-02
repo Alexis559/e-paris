@@ -53,4 +53,10 @@ function deleteUser() {
     .then(response => response.data);
 }
 
-export { getLogin, addUser, getProfilUser, updateUser, deleteUser };
+function getClassement() {
+  const url = `${BASE_URL}/user/classement`;
+  return axios.get(url)
+    .then(response => response.data);
+}
+
+export { getLogin, addUser, getProfilUser, updateUser, deleteUser, getClassement };

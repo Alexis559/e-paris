@@ -1,73 +1,34 @@
 const express = require('express');
 const router = express();
 const auth = require('../auth/access');
+const utils = require('../auth/auth');
 const jwt = require('jsonwebtoken');
-var db = require('../db/dbConnection');
+const db = require('../db/dbConnection');
+const uuid = require('../auth/uuid');
+
 
 console.log("Routeur Bet");
 
+//Get the bets of a user
 router.get('/get', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
-    db.db.connect(function (err, client, done) {
-      if (err) {
-        done();
-        throw err;
-      }
-      let query = 'SELECT * from public.ebets where "iduser" = $1';
-      client.query(query, [decoded.idUser], function (err, result) {
-        done();
-        if (err) throw err;
-        res.status(200).json({success: true, result});
-      });
-    });
-});
-
-router.get('/test', function (req, res) {
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   db.db.connect(function (err, client, done) {
     if (err) {
       done();
       throw err;
     }
-    let query = 'SELECT  ("score") from public.user where "idUser" = $1';
-    client.query(query, [1], function (err, result) {
+    let query = 'SELECT g."nameGame", e."dateBet", e."scoreTeam1", e."scoreTeam2", e."pointsMise", e."win", e."points", m."dateMatch", t."nameTeam", t2."nameTeam" as "nameTeam2" FROM public.team t2, public.ebets e, public.team t, public.game g, public.match m where t."idTeam" <> t2."idTeam" and t."idTeam" = m."idTeam1" and t2."idTeam" = m."idTeam2" and e."idUser" = $1 and e."idMatch" = m."idMatch" and g."idGame" = m."idGame"';
+    client.query(query, [decoded.idUser], function (err, result) {
       done();
       if (err) throw err;
-      res.status(200).json({result});
+      res.status(200).json({success: true, result});
     });
   });
 });
 
-/*
-router.get('/get/:idGame', function (req, res) {
-  var idGame = parseInt(req.params.idGame);
-  if(isNaN(idGame)) {
-    res.status(404).json({success: false, message: 'Jeu inconnu !'});
-  }else{
-    db.db.connect(function (err, client, done) {
-      if (err) {
-        done();
-        throw err;
-      }
-      let query = 'SELECT * from public.game where "idGame" = $1';
-      client.query(query, [idGame], function (err, result) {
-        done();
-        if (err) throw err;
-        if (result.rows[0] !== undefined) {
-          res.status(200).json({success: true, result});
-        } else {
-          res.status(401).json({
-            success: false,
-            message: 'Jeu inconnu !'
-          });
-        }
-      });
-    });
-  }
-});*/
-
-//add bet
+//Add a bet for a user
 router.post('/add', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'],  uuid.uuid);
   let idUser = decoded.idUser;
   let idMatch = req.body.idMatch;
   let scoreTeam1 = req.body.scoreTeam1;
@@ -116,39 +77,36 @@ router.post('/add', auth, function (req, res) {
                 });
               }
               else {
-                let query4 = 'SELECT count("pointsMise") from public.ebets where "idUser" = $1 and "idMatch" in (SELECT "idMatch" from public.match where "dateMatch" > $2)';
-                client.query(query4, [idUser, new Date()], function (err, points) {
+                let query5 = 'SELECT  ("score") from public.user where "idUser" = $1';
+                client.query(query5, [idUser], function (err, score) {
                   if (err) throw err;
-                  let query5 = 'SELECT  ("score") from public.user where "idUser" = $1';
-                  client.query(query5, [idUser], function (err, score) {
-                    if (err) throw err;
-                    let scorePrev = parseInt(score.rows[0].score) - parseInt(points.rows[0].count);
-                    if (scorePrev < pointsMise) {
-                      done();
-                      res.status(409).json({
-                        success: false,
-                        message: 'Pas assez de points !',
-                      });
-                    } else {
-                      let query = 'INSERT INTO public.ebets ("idMatch", "idUser", "scoreTeam1", "scoreTeam2", "pointsMise") values ($1, $2, $3, $4, $5)';//we're escaping values to avoid sql injection
-                      client.query(query, [idMatch, idUser, scoreTeam1, scoreTeam2, pointsMise], function (err) {
-                        if (err) throw err;
-                        done();
-                        res.status(201).json({
-                          success: true,
-                          message: 'Parie fait !',
-                        });
-                      });
-                    }
+                  let scorePrev = (parseInt(score.rows[0].score) - parseInt(pointsMise));
+                if (scorePrev < 0) {
+                  done();
+                  res.status(409).json({
+                    success: false,
+                    message: 'Pas assez de points !',
                   });
-                });
-              }
-            });
-          }
-        });
+                } else {
+                  let query5 = 'UPDATE public.user set "score" = $1 where "idUser" = $2';
+                  client.query(query5, [scorePrev, idUser]);
+                  let query = 'INSERT INTO public.ebets ("idMatch", "idUser", "scoreTeam1", "scoreTeam2", "pointsMise") values ($1, $2, $3, $4, $5)';//we're escaping values to avoid sql injection
+                  client.query(query, [idMatch, idUser, scoreTeam1, scoreTeam2, pointsMise], function (err) {
+                    if (err) throw err;
+                    done();
+                    res.status(201).json({
+                      success: true,
+                      message: 'Parie fait !',
+                    });
+                  });
+                }
+              });
+          }});
       }
     });
-  });
+  }
+});
+});
 });
 
 

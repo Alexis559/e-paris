@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+const uuid = require('./uuid');
 
 module.exports = function (req, res, callback) {
     try {
-        const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+        const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
         req.userData = decoded;
         callback();
     }catch (error) {

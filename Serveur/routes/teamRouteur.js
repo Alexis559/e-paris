@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express();
 const auth = require('../auth/access');
+const utils = require('../auth/auth');
 const jwt = require('jsonwebtoken');
-var db = require('../db/dbConnection');
+const db = require('../db/dbConnection');
+const uuid = require('../auth/uuid');
+
 
 console.log("Routeur Team");
 
+//Get a team by his id
 router.get('/get/:idgame', function (req, res) {
   var idgame = req.params.idgame;
   var idGame = parseInt(req.params.idgame);
@@ -28,6 +32,7 @@ router.get('/get/:idgame', function (req, res) {
   })
 });
 
+//Get the teams that are a least affected to a game
 router.get('/teamplays', function (req, res) {
   db.db.connect(function (err, client, done) {
     if (err) {
@@ -43,6 +48,7 @@ router.get('/teamplays', function (req, res) {
   })
 });
 
+//Get the teams
 router.get('/get', function (req, res) {
   db.db.connect(function (err, client, done) {
     if (err) {
@@ -58,8 +64,9 @@ router.get('/get', function (req, res) {
   })
 });
 
+//Add a team
 router.post('/add', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   let nameTeam = req.body.nameTeam;
   let dateCreation = req.body.dateCreation;
   let imgUrl = req.body.imgUrl;

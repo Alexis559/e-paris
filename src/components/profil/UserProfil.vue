@@ -5,8 +5,11 @@
         <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
       </div>
       <div class="row  box-shadow">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 text-center"><h2>{{ prenom }} {{ nom }} ({{ login }})</h2> <h4 class="bg-warning text-dark">Score: {{ score }}</h4></div>
+        <div class="col-md-4 text-center"> <h2 v-show="admin">Admin</h2></div>
+        <div class="col-md-4 text-center"><h2>{{ prenom }} {{ nom }} ({{ login }})</h2>
+          <h4 v-show="score <= 0" class="alert alert-warning">Score: {{ score }}</h4>
+          <h4 v-show="score > 0" class="alert alert-warning">Score: {{ score }}</h4>
+        </div>
         <div class="col-md-4 text-center">
           <router-link to="/profil/update">
             <button class="btn btn-primary">Modifier profil</button>
@@ -19,6 +22,7 @@
       <div id="infos">
         Membre depuis le: {{ dateCreation | formatDate}}
       </div>
+      <bet-details></bet-details>
     </div>
     <auth-fail v-else></auth-fail>
 
@@ -48,14 +52,16 @@
 import { getProfilUser, deleteUser } from '../../api/user_api';
 import AuthFail from '../errors/AuthFail';
 import { isLogged } from '../../config/config';
+import BetDetails from "../bet/BetDetails";
 
 export default {
   name: 'userProfil',
-  components: { AuthFail },
+  components: {BetDetails, AuthFail },
   data() {
     return {
       nom: '',
       prenom: '',
+      admin: '',
       dateCreation: '',
       login: '',
       score: '',
@@ -71,6 +77,7 @@ export default {
         this.nom = rep.result.rows[0].nomUser;
         this.prenom = rep.result.rows[0].prenomUser;
         this.login = rep.result.rows[0].loginUser;
+        this.admin = rep.result.rows[0].admin;
         this.score = rep.result.rows[0].score;
         this.dateCreation = rep.result.rows[0].dateCreation;
       }).catch((rep) => {

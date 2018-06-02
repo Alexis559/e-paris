@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <div class="alert alert-dark text-center" role="alert">
-      <h1>Site en construction !
-        {{ date }}</h1>
-    </div>
-  <div><img alt="lapin" src="https://i.ytimg.com/vi/AAdc-9gI5h4/maxresdefault.jpg"/></div>
-  </div>
+  <div id="acc"></div>
 </template>
 
 <script>
@@ -29,9 +23,11 @@ export default {
 </script>
 
 <style scoped>
-  img{
-    margin-top: -10vh;
-    width: 100%;
-    height: 100%;
+  #acc{
+    width: 100vw;
+    height: calc(100vh - 66px);
+    background-image: url('https://i2.wp.com/www.connectesport.com/alpha/wp-content/uploads/2016/04/maxresdefault-2.jpg?fit=1920%2C1080&ssl=1');
+    background-repeat: no-repeat;
+    background-position: center;
   }
 </style>

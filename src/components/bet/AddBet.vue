@@ -53,8 +53,9 @@ export default {
   methods: {
     createBet() {
       createBet(this.idMatch, this.scoreTeam1, this.scoreTeam2, this.misePoints).then((resp) => {
-        this.success = resp.message;
         this.success = resp.success;
+        this.message = resp.message;
+        location.reload();
       }).catch((err) => {
         this.success = err.response.data.success;
         this.message = err.response.data.message;

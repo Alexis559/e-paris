@@ -5,10 +5,12 @@ var express = require('express'),
     morgan = require('morgan');
 
 const app = express();
+
 app.use(bodyParser.json());
 app.disable('x-powered-by');//secutity
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+
 
 const port = process.env.PORT || 3333;
 
@@ -21,11 +23,11 @@ app.use('/api',api);
 
 //On indique ou se trouvent les fichiers
 app.use(express.static(path.join(__dirname,'../dist')));
+
 //Requete de base qui envoi vers index.html
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname,'../dist/index.html'));
 });
-
 
 app.listen(port);
 

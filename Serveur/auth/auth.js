@@ -1,9 +1,11 @@
+
 module.exports = function(){
+    const uuid = require('./uuid');
     const bcrypt = require('bcrypt-nodejs');
     const jwt = require('jsonwebtoken');
-    const randomSecretKey = "9d5553af-a457-4a19-9c2c-09f950912397";
 
     const module = {};
+
 
     //return the hashed version of the password
     module.cryptPassword = function (plainPassword) {
@@ -18,14 +20,13 @@ module.exports = function(){
 
     // return the jsonWebToken as string
     module.createToken = function (payload) {
-        return jwt.sign(payload, randomSecretKey);
+        return jwt.sign(payload, uuid.uuid);
     };
 
     module.getUserLogin = function(req) {
       if(req !== undefined){
-        const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
-        var userData = decoded;
-        return userData;
+        let decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
+        return decoded;
       }else{
         return 'pas de chance';
       }

@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express();
 const auth = require('../auth/access');
+const utils = require('../auth/auth');
 const jwt = require('jsonwebtoken');
-var db = require('../db/dbConnection');
+const db = require('../db/dbConnection');
+const uuid = require('../auth/uuid');
 
 console.log("Routeur Game");
 
+//Get the games
 router.get('/get', function (req, res) {
   db.db.connect(function (err, client, done) {
     if (err) {
@@ -13,13 +16,14 @@ router.get('/get', function (req, res) {
       throw err;
     }
     client.query("SELECT * from public.game;", (err, result) => {
-      done();
       if (err) throw err;
       res.status(200).json(result.rows);
+      done();
     })
   });
 });
 
+//Get a game by his id
 router.get('/get/:idGame', function (req, res) {
   var idGame = parseInt(req.params.idGame);
   if(isNaN(idGame)) {
@@ -47,9 +51,9 @@ router.get('/get/:idGame', function (req, res) {
   }
 });
 
-//add game
+//Add a game
 router.post('/add', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   let nameGame = req.body.nameGame;
   let dateCreation = req.body.dateCreation;
   let imgGame = req.body.imgGame;

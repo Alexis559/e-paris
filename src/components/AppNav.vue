@@ -17,12 +17,15 @@
         <li>
           <router-link to="/games" class="navbar-brand nav-link">Jeux</router-link>
         </li>
+        <li>
+          <router-link to="/classement" class="navbar-brand nav-link">Classement</router-link>
+        </li>
       </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
         <router-link to="/login" v-if="!logged"><button class="btn btn-info log">Log in</button></router-link>
         <router-link to="/register" v-if="!logged"><button class="btn btn-success log">Sign up</button></router-link>
-        <router-link to="/profil" v-if="logged"> <button class="btn btn-info log"><img src="../assets/icons/open-iconic-master/svg/person.svg" alt="person"/>User</button></router-link>
+        <router-link to="/profil" v-if="logged"> <button class="btn btn-info log"><img src="../assets/icons/open-iconic-master/svg/person.svg" alt="person"/>Profil</button></router-link>
         <router-link to="" v-if="logged"><button @click="logout" class="btn btn-danger log">Log out</button></router-link>
       </li>
     </ul>

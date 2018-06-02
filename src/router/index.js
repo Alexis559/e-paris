@@ -11,6 +11,7 @@ import UserProfilUpdate from '../components/profil/UpdateProfil';
 import AddGame from '../components/games/AddGame';
 import GameDetails from '../components/games/GameDetails';
 import MatchDetails from '../components/match/MatchDetails';
+import Classement from '../components/other/Classement';
 
 Vue.use(Router);
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/match/details/:idMatch',
       name: 'Match Details',
       component: MatchDetails,
+    },
+    {
+      path: '/classement',
+      name: 'Classement',
+      component: Classement,
     },
     {
       path: '*',

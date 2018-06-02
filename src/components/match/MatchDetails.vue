@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="logged && success">
+    <div v-if="logged">
       <div class="row  box-shadow">
         <div class=" alert alert-primary col-md-4">
           <h1 class="text-center">{{this.matches[0].nameGame}}</h1><h1 class="text-center">{{this.matches[0].description}}</h1></div>
         <div class="col-md-4 text-center"><h1><img class="rounded-circle" v-bind:src="this.matches[0].logoTeam" alt="team1"/>  {{this.matches[0].nameTeam}} vs {{this.matches[1].nameTeam}} <img class="rounded-circle" v-bind:src="this.matches[1].logoTeam" alt="team1"/> </h1>
         </div>
-        <div v-show="this.datePassed(this.matches[0].dateMatch)" class="col-md-4 text-center">
+        <div v-show="this.datePassed(this.matches[0].dateMatch) && isAdmin" class="col-md-4 text-center">
           <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#updateResultat">
             Résultats
           </button>
@@ -28,11 +28,15 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <div class="modal-body text-center">
+            <div id="showConnection">
+              <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
+              <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+            </div>
             <form @submit.prevent="updateResultat" class="form-signin">
               <h1 class="h3 mb-3 font-weight-normal">Résultat</h1>
-              <label for="team1" class="sr-only">{{this.matches[0].nameTeam}}</label>
+              <label for="team1">{{this.matches[0].nameTeam}}</label>
               <input v-model="scoreTeam1" type="number" id="team1" class="form-control" required>
-              <label for="team2" class="sr-only">{{this.matches[1].nameTeam}}</label>
+              <label for="team2">{{this.matches[1].nameTeam}}</label>
               <input v-model="scoreTeam2" type="number" id="team2" class="form-control" required>
               <button class="btn btn-lg btn-primary btn-block" type="submit">Publier</button>
             </form>
@@ -56,11 +60,12 @@
     components: { AuthFail },
     data() {
       return {
+        message: '',
         matches: '',
         scoreTeam1: '',
         scoreTeam2: '',
         logged: '',
-        success: true,
+        success: '',
         isAdmin: '',
       };
     },
@@ -69,6 +74,7 @@
         updateResultat(this.matches[0].idMatch, this.scoreTeam1, this.scoreTeam2).then((res) => {
           this.success = res.success;
           this.message = res.message;
+          location.reload();
         }).catch((rep)=> {
           this.success = rep.response.data.success;
           this.message = rep.response.data.message;
@@ -116,5 +122,9 @@
 
   .score h1{
     font-size: 90px;
+  }
+
+  input{
+    margin-bottom: 30px;
   }
 </style>

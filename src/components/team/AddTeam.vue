@@ -52,6 +52,7 @@ export default {
       createTeam(this.nameTeam, this.dateCreation, this.urlImg, this.idGame).then((response) => {
         this.success = response.success;
         this.message = response.message;
+        location.reload();
       }).catch((rep) => {
         this.message = rep.response.data.message;
         this.success = rep.response.data.success;

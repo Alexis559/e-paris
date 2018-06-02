@@ -92,6 +92,7 @@
         addMatch(this.idTeam1, this.idTeam2, this.idGame, this.description, this.dateMatch).then((response) => {
           this.success = response.success;
           this.message = response.message;
+          location.reload();
         }).catch((error) => {
           this.success = error.response.data.success;
           this.message = error.response.data.message;

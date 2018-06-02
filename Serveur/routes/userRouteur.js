@@ -4,6 +4,7 @@ const db = require('../db/dbConnection');
 const utils = require('../auth/auth');
 const auth = require('../auth/access');
 const jwt = require('jsonwebtoken');
+const uuid = require('../auth/uuid');
 
 
 console.log("Routeur User");
@@ -30,7 +31,6 @@ router.post('/login', function (req, res) {
             };
             var token = utils().createToken(payload);
             // return the information including token as JSON
-            done();
             res.status(200).json({
               success: true,
               message: 'Utilisateur connecté !',
@@ -38,7 +38,6 @@ router.post('/login', function (req, res) {
               admin: result.rows[0].admin,
             });
           } else {
-            done();
             res.status(401).json({
               success: false,
               message: 'Utilisateur inconnu !',
@@ -46,7 +45,6 @@ router.post('/login', function (req, res) {
             });
           }
         } else {
-          done();
           res.status(401).json({
             success: false,
             message: 'Utilisateur inconnu !',
@@ -58,13 +56,13 @@ router.post('/login', function (req, res) {
 });
 
 router.get('/profil', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'],uuid.uuid);
   db.db.connect(function (err, client, done) {
     if (err) {
       done();
       throw err;
     }
-    let query = 'SELECT "loginUser", "nomUser", "prenomUser", "mailUser", "dateCreation", "score" from public.user where "loginUser" = $1 and "idUser" = $2';
+    let query = 'SELECT "loginUser", "nomUser", "prenomUser", "mailUser", "dateCreation", "score", "admin" from public.user where "loginUser" = $1 and "idUser" = $2';
     client.query(query, [decoded.login, decoded.idUser], function (err, result) {
       done();
       if (err) throw err;
@@ -119,7 +117,7 @@ router.post('/add', function (req, res) {
 });
 
 router.put('/update', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   let pseudo = req.body.pseudo;
   let nom = req.body.nom;
   let prenom = req.body.prenom;
@@ -162,7 +160,7 @@ router.put('/update', auth, function (req, res) {
 });
 
 router.delete('/delete', auth, function (req, res) {
-  const decoded = jwt.verify(req.headers['x-access-token'], "9d5553af-a457-4a19-9c2c-09f950912397");
+  const decoded = jwt.verify(req.headers['x-access-token'],uuid.uuid);
   db.db.connect(function (err, client, done) {
     if (err) {
       done();
@@ -187,6 +185,21 @@ router.delete('/delete', auth, function (req, res) {
           });
         });
       }
+    })
+  });
+});
+
+router.get('/classement', function (req, res) {
+  db.db.connect(function (err, client, done) {
+    if (err) {
+      done();
+      throw err;
+    }
+    let query = 'SELECT "loginUser", "score" from public.user order by "score" desc limit 100';
+    client.query(query, function (err, result) {
+      done();
+      if (err) throw err;
+      res.status(200).json({success: true, result});
     })
   });
 });

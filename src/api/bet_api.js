@@ -19,4 +19,9 @@ function createBet(idMatch, scoreTeam1, scoreTeam2, pointsMise) {
     .then(response => response.data);
 }
 
-export { createBet };
+function getBet() {
+  const url = `${BASE_URL}/bet/get`;
+  return axios.get(url).then(response => response.data);
+}
+
+export { createBet, getBet };
