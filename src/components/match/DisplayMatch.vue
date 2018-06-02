@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="cont">
     <div v-if="logged && success">
       <div class="row">
       <div class="col-md-4"></div>
@@ -8,10 +8,11 @@
         <button v-show="isAdmin && logged" class="btn btn-primary" data-toggle="modal" data-target="#addMatch">Ajouter un match</button>
       </div>
       </div>
-      <div v-for="(game, index) in games" :key='index'>
+      <div  v-for="(game, index) in games" :key='index'>
         <div><h2 class=" alert alert-dark headerGame text-center">{{game.nameGame}}</h2></div>
         <div class="card-deck text-center">
-          <div class="col-sm-3" v-if="match.infos.idGame === game.idGame" v-for="(match, index) in matches.match" :key='index'>
+          <div class="alignLeft col-sm-3" v-if="match.infos.idGame === game.idGame" v-for="(match, index) in matches.match" :key='index'>
+            <add-bet class="modal fade" v-bind:id="'addBet'+match.infos.idMatch" tabindex="-1" role="dialog" aria-labelledby="Parier" aria-hidden="true" :nomTeam1="match.nomTeam1" :nomTeam2="match.nomTeam2" :idMatch="match.infos.idMatch"></add-bet>
             <div class="card mb-3 box-shadow">
               <div class="card-header">
                 <h1 class="badge alert-info">{{game.nameGame}}</h1>
@@ -25,7 +26,7 @@
                     <router-link :to="'/match/details/' + match.infos.idMatch"><button type="button" class="btn btn-lg btn-block btn-success">Details</button></router-link>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Parier</button>
+                    <button type="button" data-toggle="modal" v-bind:data-target="'#addBet'+match.infos.idMatch" class="btn btn-lg btn-block btn-primary">Parier</button>
                   </div>
                 </div>
               </div>
@@ -45,11 +46,12 @@ import { getGames } from '../../api/game_api';
 import { getTeams } from '../../api/team_api';
 import AuthFail from '../errors/AuthFail';
 import AddMatch from './AddMatch';
+import AddBet from "../bet/AddBet";
 import { isLogged, isAdmin } from '../../config/config';
 
 export default {
   name: 'DisplayMatch',
-  components: { AuthFail, AddMatch },
+  components: { AddBet, AuthFail, AddMatch },
   data() {
     return {
       publicMatches: '',
@@ -107,7 +109,14 @@ export default {
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
 <style scoped>
+  #cont{
+    width: 95vw;
+    margin: auto;
+  }
+
   .headerGame{
     margin-top: 50px;
   }

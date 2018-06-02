@@ -17,7 +17,7 @@
         </div>
       </div>
       <div id="infos">
-        Date de création: {{ dateCreation | formatDate}}
+        Membre depuis le: {{ dateCreation | formatDate}}
       </div>
     </div>
     <auth-fail v-else></auth-fail>

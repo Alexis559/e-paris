@@ -42,8 +42,6 @@
       </div>
     </div>
     <AuthFail v-else></AuthFail>
-
-
   </div>
 </template>
 
@@ -92,6 +90,9 @@
       }
     },
     mounted() {
+      this.matches = [];
+      this.matches[0] = '';
+      this.matches[1]= '';
       this.getMatchById(this.$route.params.idMatch);
       this.logged = isLogged();
       this.isAdmin = isAdmin();

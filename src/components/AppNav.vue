@@ -12,7 +12,7 @@
           <router-link to="/" class="navbar-brand nav-link">Accueil</router-link>
         </li>
         <li>
-          <router-link to="/match" class="navbar-brand nav-link">Match</router-link>
+          <router-link v-if="logged" to="/match" class="navbar-brand nav-link">Match</router-link>
         </li>
         <li>
           <router-link to="/games" class="navbar-brand nav-link">Jeux</router-link>
