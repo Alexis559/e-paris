@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="this.success">
+    <div v-if="success">
     <add-team :idGame="idGame" class="modal fade" id="createTeam" tabindex="1" role="dialog" aria-labelledby="Ajouter une équipe" aria-hidden="true"></add-team>
   <div id="showImgGame" v-bind:style="{ 'background-image': 'url(' + this.imgUrl + ')' }" style="background-attachment: fixed; color: ghostwhite; background-position: center; background-repeat: no-repeat;">
     <div v-if="success === true" class="container">

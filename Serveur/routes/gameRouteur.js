@@ -23,7 +23,7 @@ router.get('/get', function (req, res) {
   });
 });
 
-//Get a game by his id
+//Get a game by its id
 router.get('/get/:idGame', function (req, res) {
   var idGame = parseInt(req.params.idGame);
   if(isNaN(idGame)) {

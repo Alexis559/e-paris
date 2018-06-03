@@ -2,16 +2,16 @@
   <div id="cont">
     <div v-if="logged && success">
       <div class="row">
-      <div class="col-md-4"></div>
-      <div class="col-md-4 text-center"><h1>Match</h1></div>
-      <div class="col-md-4 text-center">
-        <button v-show="isAdmin && logged" class="btn btn-primary" data-toggle="modal" data-target="#addMatch">Ajouter un match</button>
-      </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-center"><h1>Match</h1></div>
+        <div class="col-md-4 text-center">
+          <button v-show="isAdmin && logged" class="btn btn-primary" data-toggle="modal" data-target="#addMatch">Ajouter un match</button>
+        </div>
       </div>
       <div  v-for="(game, index) in games" :key='index'>
         <div><h2 class=" alert alert-dark headerGame text-center">{{game.nameGame}}</h2></div>
         <div class="card-deck text-center">
-          <div class="alignLeft col-sm-3" v-if="match.infos.idGame === game.idGame" v-for="(match, index) in matches.match" :key='index'>
+          <div class="mb-3" v-if="match.infos.idGame === game.idGame" v-for="(match, index) in matches.match" :key='index'>
             <add-bet class="modal fade" v-bind:id="'addBet'+match.infos.idMatch" tabindex="-1" role="dialog" aria-labelledby="Parier" aria-hidden="true" :nomTeam1="match.nomTeam1" :nomTeam2="match.nomTeam2" :idMatch="match.infos.idMatch"></add-bet>
             <div class="card mb-3 box-shadow">
               <div class="card-header">
@@ -26,7 +26,7 @@
                     <router-link :to="'/match/details/' + match.infos.idMatch"><button type="button" class="btn btn-lg btn-block btn-success">Details</button></router-link>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <button type="button" data-toggle="modal" v-bind:data-target="'#addBet'+match.infos.idMatch" class="btn btn-lg btn-block btn-primary">Parier</button>
+                    <button :disabled="datePassed(match.infos.dateMatch)" type="button" data-toggle="modal" v-bind:data-target="'#addBet'+match.infos.idMatch" class="btn btn-lg btn-block btn-primary">Parier</button>
                   </div>
                 </div>
               </div>
@@ -82,6 +82,13 @@ export default {
         this.games = games;
       });
     },
+    datePassed(date) {
+      if (new Date(date) < new Date()){
+        return true;
+      }else{
+        return false;
+      }
+    },
     prepareMatch() {
       this.matches = {match: []};
       for(let i=0; i<this.publicMatches.length; i++) {
@@ -108,12 +115,10 @@ export default {
   },
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-
 
 <style scoped>
   #cont{
-    width: 95vw;
+    max-width: 90vw;
     margin: auto;
   }
 
@@ -122,6 +127,8 @@ export default {
   }
 
   .row{
+    margin: auto;
     margin-top: 30px;
+    max-width: 90vw;
   }
 </style>

@@ -90,7 +90,6 @@ export default {
         this.message = rep.message;
         this.success = rep.success;
         this.$store.dispatch('logout');
-        sleep(2000);
         document.location.href = '/';
       }).catch((rep) => {
         this.message = rep.response.data.message;

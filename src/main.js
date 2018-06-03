@@ -9,6 +9,7 @@ const LOGOUT = 'LOGOUT';
 
 Vue.use(Vuex);
 
+//store to manage the connection of the user
 const store = new Vuex.Store({
   state: {
     isLoggedIn: localStorage.getItem('access_token'),
@@ -51,9 +52,10 @@ const store = new Vuex.Store({
   },
 });
 
+//Creation of filters for the dates
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('DD/MM/YYYY')
+    return moment(String(value)).format('DD/MM/YYYY');
   }
 });
 

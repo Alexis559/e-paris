@@ -5,20 +5,6 @@
 <script>
 export default {
   name: 'Accueil',
-  data() {
-    return {
-      date: '',
-    };
-  },
-  methods: {
-    getDate() {
-      let date = new Date();
-      this.date = date.getDate() + '/0' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    },
-  },
-  mounted() {
-    this.getDate();
-  },
 };
 </script>
 

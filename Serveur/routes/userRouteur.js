@@ -55,6 +55,7 @@ router.post('/login', function (req, res) {
     });
 });
 
+//get the profil of the user connected
 router.get('/profil', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'],uuid.uuid);
   db.db.connect(function (err, client, done) {
@@ -116,6 +117,7 @@ router.post('/add', function (req, res) {
     });
 });
 
+//update a user
 router.put('/update', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   let pseudo = req.body.pseudo;
@@ -128,8 +130,8 @@ router.put('/update', auth, function (req, res) {
       throw err;
     }
     let query1 = 'select count(*) from public.user where "loginUser" = $1';
-    db.query(query1, [pseudo], function (err, result) {
-      //if the pseudo already exists we return an error
+    client.query(query1, [pseudo], function (err, result) {
+      //if the login already exists we return an error
       if (decoded.login !== pseudo && result.rows[0].count === '1') {
         done();
         res.status(409).json({
@@ -159,6 +161,7 @@ router.put('/update', auth, function (req, res) {
   });
 });
 
+//delete a user
 router.delete('/delete', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'],uuid.uuid);
   db.db.connect(function (err, client, done) {
@@ -189,6 +192,7 @@ router.delete('/delete', auth, function (req, res) {
   });
 });
 
+//get the ranking
 router.get('/classement', function (req, res) {
   db.db.connect(function (err, client, done) {
     if (err) {

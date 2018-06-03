@@ -107,7 +107,7 @@ router.get('/get/:idmatch', auth, function (req, res) {
 });
 
 //Mettre a jour les résultats d'un match
-router.post('/result/:idmatch', auth, function (req, res) {
+router.put('/result/:idmatch', auth, function (req, res) {
   const decoded = jwt.verify(req.headers['x-access-token'], uuid.uuid);
   var idMatch = parseInt(req.params.idmatch);
   let scoreTeam1 = req.body.scoreTeam1;
@@ -125,7 +125,7 @@ router.post('/result/:idmatch', auth, function (req, res) {
     client.query(query2, [idMatch], function (err, result) {
       if (result.rows[0].count === '0'  ) {
         done();
-        res.status(409).json({
+        res.status(404).json({
           success: false,
           message: 'Ce match n\'existe pas !',
         });

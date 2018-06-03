@@ -1,10 +1,13 @@
 <template>
-  <div>
-    <div v-if="logged">
+  <div id="cont">
+    <div v-if="logged && success">
       <div class="row  box-shadow">
         <div class=" alert alert-primary col-md-4">
           <h1 class="text-center">{{this.matches[0].nameGame}}</h1><h1 class="text-center">{{this.matches[0].description}}</h1></div>
-        <div class="col-md-4 text-center"><h1><img class="rounded-circle" v-bind:src="this.matches[0].logoTeam" alt="team1"/>  {{this.matches[0].nameTeam}} vs {{this.matches[1].nameTeam}} <img class="rounded-circle" v-bind:src="this.matches[1].logoTeam" alt="team1"/> </h1>
+        <div class="col-md-4 text-center">
+          <div><img class="rounded-circle" v-bind:src="this.matches[0].logoTeam" alt="team1"/>  <img class="rounded-circle" v-bind:src="this.matches[1].logoTeam" alt="team1"/></div>
+
+          <h1>{{this.matches[0].nameTeam}} vs {{this.matches[1].nameTeam}}</h1>
         </div>
         <div v-show="this.datePassed(this.matches[0].dateMatch) && isAdmin" class="col-md-4 text-center">
           <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#updateResultat">
@@ -29,8 +32,8 @@
           </button>
           <div class="modal-body text-center">
             <div id="showConnection">
-              <h5 class="alert alert-danger" v-show="success === false">{{ message }}</h5>
-              <h5 class="alert alert-success" v-show="success === true">{{ message }}</h5>
+              <h5 class="alert alert-danger" v-show="successBet === false">{{ message }}</h5>
+              <h5 class="alert alert-success" v-show="successBet === true">{{ message }}</h5>
             </div>
             <form @submit.prevent="updateResultat" class="form-signin">
               <h1 class="h3 mb-3 font-weight-normal">Résultat</h1>
@@ -45,7 +48,7 @@
         </div>
       </div>
     </div>
-    <AuthFail v-else></AuthFail>
+    <not-found v-else></not-found>
   </div>
 </template>
 
@@ -54,10 +57,11 @@
   import { getMatchById, updateResultat } from '../../api/match_api';
   import AuthFail from '../errors/AuthFail';
   import { isLogged, isAdmin } from '../../config/config';
+  import NotFound from "../errors/Notfound";
 
   export default {
     name: 'MatchDetails',
-    components: { AuthFail },
+    components: {NotFound },
     data() {
       return {
         message: '',
@@ -65,18 +69,19 @@
         scoreTeam1: '',
         scoreTeam2: '',
         logged: '',
-        success: '',
+        success: true,
+        successBet: '',
         isAdmin: '',
       };
     },
     methods: {
       updateResultat() {
         updateResultat(this.matches[0].idMatch, this.scoreTeam1, this.scoreTeam2).then((res) => {
-          this.success = res.success;
+          this.successBet = res.success;
           this.message = res.message;
           location.reload();
         }).catch((rep)=> {
-          this.success = rep.response.data.success;
+          this.successBet = rep.response.data.success;
           this.message = rep.response.data.message;
         })
       },
@@ -88,7 +93,7 @@
         });
       },
       datePassed(date) {
-        if (date > moment().format("YY-MM-DD")){
+        if (new Date(date) < new Date()){
           return true;
         }else{
           return false;
@@ -98,14 +103,14 @@
     mounted() {
       this.matches = [];
       this.matches[0] = '';
-      this.matches[1]= '';
+      this.matches[1] = '';
       this.getMatchById(this.$route.params.idMatch);
       this.logged = isLogged();
       this.isAdmin = isAdmin();
     },
   };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
   .row{
     margin-top: 30px;
@@ -127,4 +132,10 @@
   input{
     margin-bottom: 30px;
   }
+
+  #cont{
+    max-width: 90vw;
+    margin: auto;
+  }
+
 </style>

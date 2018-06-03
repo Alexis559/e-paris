@@ -66,7 +66,6 @@ export default {
 
   h2{
     margin-bottom: 5vh;
-    font-family: ;
   }
 
   h3{

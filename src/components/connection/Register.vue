@@ -9,24 +9,24 @@
       <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
       <div class="text-left row">
         <div class="col-md-6 mb-3">
-          <label for="prenomUser" class="sr-only">Prénom</label>
+          <label for="prenomUser">Prénom</label>
           <input v-model="prenomUser" type="text" class="form-control" id="prenomUser" placeholder="Prénom" value="" required>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="nomUser" class="sr-only">Nom</label>
+          <label for="nomUser">Nom</label>
           <input v-model="nomUser" type="text" class="form-control" id="nomUser" placeholder="Nom" value="" required>
         </div>
       </div>
-      <label for="inputPseudo" class="sr-only">Pseudo</label>
+      <label for="inputPseudo">Pseudo</label>
       <input v-model="pseudoUser" type="text" id="inputPseudo" class="form-control" placeholder="Pseudo" required>
-      <label for="inputEmail" class="sr-only">Email address</label>
+      <label for="inputEmail">Email address</label>
       <input v-model="mailUser" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
-      <label for="inputPassword" class="sr-only">Password</label>
+      <label for="inputPassword">Password</label>
       <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <label for="inputPassword" class="sr-only">Password (confirm)</label>
+      <label for="inputPassword">Password (confirm)</label>
       <input v-model="passwordConfirm" type="password" id="inputPasswordSecond" class="form-control" placeholder="Password Confirm" required>
-      <p class="badge badge-danger" v-if="!validForm">Les mots de passe ne correspondent pas !</p>
-      <label for="inputDate" class="sr-only">Date de naissance</label>
+      <p class="badge badge-danger" v-show="!validForm">Les mots de passe ne correspondent pas !</p>
+      <label id="naissance" for="inputDate">Date de naissance</label>
       <input v-model="dateNaissance" type="date" id="inputDate" class="form-control" placeholder="" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="!validForm">Sign up</button>
     </form>
@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     validForm() {
-      return this.password === this.passwordConfirm && this.password !== '';
+      return this.password === this.passwordConfirm;
     },
   },
   methods: {
@@ -67,7 +67,6 @@ export default {
       addUser(this.nomUser, this.prenomUser, this.pseudoUser, this.mailUser, this.password, this.dateNaissance).then((response) => {
         this.success = response.success;
         this.message = response.message;
-        sleep(2000);
         document.location.href = '/login';
       }).catch((error) => {
         this.success = error.response.data.success;
@@ -135,4 +134,7 @@ export default {
     margin-top: 5vh;
   }
 
+  #naissance{
+    margin-top: 10px;
+  }
 </style>

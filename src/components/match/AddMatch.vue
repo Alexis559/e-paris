@@ -82,7 +82,6 @@
       getTeams(idGame) {
         getTeamGame(idGame).then((response) => {
           this.teams = response.rows;
-          console.log(response);
         }).catch((err) => {
           this.success = err.response.data.success;
           this.message = err.response.data.message;

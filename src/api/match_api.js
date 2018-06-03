@@ -32,7 +32,7 @@ function getMatchById(idMatch) {
 
 function updateResultat(idMatch, scoreTeam1, scoreTeam2){
   const url = `${BASE_URL}/match/result/` + idMatch;
-  return axios.post(url, {
+  return axios.put(url, {
     scoreTeam1: scoreTeam1,
     scoreTeam2: scoreTeam2,
   })

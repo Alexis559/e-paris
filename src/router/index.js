@@ -54,11 +54,6 @@ export default new Router({
       component: UserProfil,
     },
     {
-      path: '/games/add',
-      name: 'Game Add',
-      component: AddGame,
-    },
-    {
       path: '/games/:idGame',
       name: 'Game Details',
       component: GameDetails,

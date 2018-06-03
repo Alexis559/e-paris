@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div v-if="logged" class="text-center">
+    <div v-if="logged && success" class="text-center">
       <form @submit.prevent="updateUser" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Modifier votre profil</h1>
         <div class="text-left row">
@@ -61,6 +61,7 @@ export default {
         this.prenomUser = rep.result.rows[0].prenomUser;
         this.pseudoUser = rep.result.rows[0].loginUser;
         this.mailUser = rep.result.rows[0].mailUser;
+        this.success = rep.success;
       });
     },
   },

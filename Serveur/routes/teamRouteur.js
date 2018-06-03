@@ -9,7 +9,7 @@ const uuid = require('../auth/uuid');
 
 console.log("Routeur Team");
 
-//Get a team by his id
+//Get a team by its id
 router.get('/get/:idgame', function (req, res) {
   var idgame = req.params.idgame;
   var idGame = parseInt(req.params.idgame);
